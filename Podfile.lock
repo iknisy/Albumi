@@ -1,3 +1,22 @@
-PODFILE CHECKSUM: 569d0ecc1a3ad5b58e48dd44e66b6a3603c818a5
+PODS:
+  - FMDB (2.7.5):
+    - FMDB/standard (= 2.7.5)
+  - FMDB/standard (2.7.5)
+  - IBPCollectionViewCompositionalLayout (0.6.6)
+
+DEPENDENCIES:
+  - FMDB
+  - IBPCollectionViewCompositionalLayout
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - FMDB
+    - IBPCollectionViewCompositionalLayout
+
+SPEC CHECKSUMS:
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  IBPCollectionViewCompositionalLayout: 65967f7f7f99409684d54b26be21ef877e1913da
+
+PODFILE CHECKSUM: 40cebf63b74505ac9e8bd8f6bd34a92c5b4c42bd
 
 COCOAPODS: 1.6.1
