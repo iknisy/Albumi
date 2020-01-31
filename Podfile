@@ -6,7 +6,9 @@ target 'Albumi' do
   use_frameworks!
 
   # Pods for Albumi
-
+  pod 'IBPCollectionViewCompositionalLayout'
+  pod 'FMDB'
+  
   target 'AlbumiTests' do
     inherit! :search_paths
     # Pods for testing

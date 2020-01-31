@@ -8,10 +8,25 @@
 
 import UIKit
 
+import IBPCollectionViewCompositionalLayout
+
 private let reuseIdentifier = "Cell"
 
 class MainCollectionViewController: UICollectionViewController {
 
+    lazy var myCollectionViewLayout: UICollectionViewLayout = {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(120))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .absolute(120))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .flexible(0), top: nil, trailing: .flexible(0), bottom: nil)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -22,6 +37,9 @@ class MainCollectionViewController: UICollectionViewController {
         self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+        self.collectionView.collectionViewLayout = myCollectionViewLayout
+//        self.collectionView.setCollectionViewLayout(myCollectionViewLayout, animated: false)
+        
     }
 
     /*
