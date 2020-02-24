@@ -7,26 +7,36 @@
 //
 
 import UIKit
-
+import Photos
 import IBPCollectionViewCompositionalLayout
 
-private let reuseIdentifier = "Cell"
 
 class MainCollectionViewController: UICollectionViewController {
 
-    lazy var myCollectionViewLayout: UICollectionViewLayout = {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(120))
+//    用來儲存所有圖片
+    var allAssets : [PHAsset] = []
+//    預設的Layout
+    var initCollectionViewLayout: UICollectionViewLayout = {
+//        item設定成：寬與高皆為group寬的0.22倍
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.22), heightDimension: .fractionalWidth(0.22))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.2), heightDimension: .absolute(120))
+//        group設定成：寬為section寬的1倍，長為section寬的0.25倍，內部間隔最小10
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalWidth(0.25))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .flexible(0), top: nil, trailing: .flexible(0), bottom: nil)
-        
+//        ipod與模擬器版面issue的workaround，需要其他設備確認真正的問題點
+        if #available(iOS 13, *) {
+            group.interItemSpacing = .flexible(10)
+        }else{
+            group.interItemSpacing = .fixed(10)
+        }
+//        group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(1), top: nil, trailing: .fixed(1), bottom: nil)
+//        section設定成：邊際大小節皆為10
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,11 +44,18 @@ class MainCollectionViewController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
+//        已在storyboard中register
         // Do any additional setup after loading the view.
-        self.collectionView.collectionViewLayout = myCollectionViewLayout
-//        self.collectionView.setCollectionViewLayout(myCollectionViewLayout, animated: false)
+//        設定成自定的Layout  （下兩行應該是一樣的作用）
+        self.collectionView.collectionViewLayout = initCollectionViewLayout
+//        self.collectionView.setCollectionViewLayout(initCollectionViewLayout, animated: false)
+//        讀取設備內的圖片資料，並以creationDate降冪排列，然後存入allAssets
+        let phoptions = PHFetchOptions()
+        phoptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        let assets = PHAsset.fetchAssets(with: .image, options: phoptions)
+        assets.enumerateObjects({ (asset, _, _) in
+            self.allAssets.append(asset)
+        })
         
     }
 
@@ -55,22 +72,35 @@ class MainCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        // return the number of sections
+        return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+        // return the number of items
+        return allAssets.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCollectionViewCell
         // Configure the cell
+//        從allAssets中讀取圖片，在cell裡顯示
+        let imageManager = PHImageManager.default()
+        imageManager.requestImage(for: allAssets[indexPath.row], targetSize:  CGSize(width: 90, height: 90), contentMode: .aspectFit, options: nil, resultHandler: {(image, info) in
+            cell.gridImageView.image = image
+        })
     
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showDetail" {
+            let destinationViewController = segue.destination as! DetailTableViewController
+            guard let indexPaths = collectionView.indexPathsForSelectedItems else{return}
+            destinationViewController.assetIndex = indexPaths[0].row
+            destinationViewController.allAssets = allAssets
+        }
     }
 
     // MARK: UICollectionViewDelegate

@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2FB33ED9CD17DA75333EAEF9 /* Pods_Albumi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */; };
-		541AC33823E3F3CC0087614E /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 541AC33723E3F3CC0087614E /* .gitignore */; };
+		541AC33A23EAB40B0087614E /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */; };
+		541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33B23EAF12D0087614E /* DetailTableViewController.swift */; };
+		541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33D23EC2AF60087614E /* FullScreenViewController.swift */; };
 		547184D223C1D3C200714916 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D123C1D3C200714916 /* AppDelegate.swift */; };
 		547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D323C1D3C200714916 /* SceneDelegate.swift */; };
 		547184D923C1D3C200714916 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 547184D723C1D3C200714916 /* Main.storyboard */; };
@@ -16,6 +18,7 @@
 		547184DE23C1D3C200714916 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 547184DC23C1D3C200714916 /* LaunchScreen.storyboard */; };
 		547184E923C1D3C200714916 /* AlbumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184E823C1D3C200714916 /* AlbumiTests.swift */; };
 		547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184F723C1D61B00714916 /* MainCollectionViewController.swift */; };
+		54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */; };
 		CCC8A083BAB1E2A2408DCC7D /* Pods_AlbumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,7 +35,9 @@
 /* Begin PBXFileReference section */
 		20589AC083EC1C80F535255E /* Pods-AlbumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlbumiTests.debug.xcconfig"; path = "Target Support Files/Pods-AlbumiTests/Pods-AlbumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlbumiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		541AC33723E3F3CC0087614E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
+		541AC33B23EAF12D0087614E /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
+		541AC33D23EC2AF60087614E /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 		547184CE23C1D3C200714916 /* Albumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		547184D323C1D3C200714916 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,6 +49,7 @@
 		547184E823C1D3C200714916 /* AlbumiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumiTests.swift; sourceTree = "<group>"; };
 		547184EA23C1D3C200714916 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		547184F723C1D61B00714916 /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
+		54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBPCollectionViewCompositionalLayoutInteroperability.swift; sourceTree = "<group>"; };
 		77A5626E493BF740589BC834 /* Pods-Albumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.debug.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.debug.xcconfig"; sourceTree = "<group>"; };
 		87282266F10529680B1DDEAB /* Pods-Albumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.release.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.release.xcconfig"; sourceTree = "<group>"; };
 		B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Albumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,9 +105,9 @@
 				547184F323C1D58900714916 /* StoryBoard */,
 				547184D123C1D3C200714916 /* AppDelegate.swift */,
 				547184D323C1D3C200714916 /* SceneDelegate.swift */,
+				54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */,
 				547184DA23C1D3C200714916 /* Assets.xcassets */,
 				547184DF23C1D3C200714916 /* Info.plist */,
-				541AC33723E3F3CC0087614E /* .gitignore */,
 			);
 			path = Albumi;
 			sourceTree = "<group>";
@@ -134,6 +140,7 @@
 		547184F523C1D5BF00714916 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -142,6 +149,8 @@
 			isa = PBXGroup;
 			children = (
 				547184F723C1D61B00714916 /* MainCollectionViewController.swift */,
+				541AC33B23EAF12D0087614E /* DetailTableViewController.swift */,
+				541AC33D23EC2AF60087614E /* FullScreenViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -250,7 +259,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				541AC33823E3F3CC0087614E /* .gitignore in Resources */,
 				547184DE23C1D3C200714916 /* LaunchScreen.storyboard in Resources */,
 				547184DB23C1D3C200714916 /* Assets.xcassets in Resources */,
 				547184D923C1D3C200714916 /* Main.storyboard in Resources */,
@@ -342,9 +350,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				541AC33A23EAB40B0087614E /* GridCollectionViewCell.swift in Sources */,
+				541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */,
 				547184D223C1D3C200714916 /* AppDelegate.swift in Sources */,
 				547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */,
 				547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */,
+				54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */,
+				541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,7 +520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5RK2SKA3C;
 				INFOPLIST_FILE = Albumi/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -528,7 +540,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = D5RK2SKA3C;
 				INFOPLIST_FILE = Albumi/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
