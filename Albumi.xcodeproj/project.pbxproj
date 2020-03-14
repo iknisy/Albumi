@@ -11,6 +11,8 @@
 		541AC33A23EAB40B0087614E /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */; };
 		541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33B23EAF12D0087614E /* DetailTableViewController.swift */; };
 		541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33D23EC2AF60087614E /* FullScreenViewController.swift */; };
+		541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DA241B6B3D00601020 /* PictureRemark.swift */; };
+		541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DC241B875700601020 /* PictureRemarkIO.swift */; };
 		547184D223C1D3C200714916 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D123C1D3C200714916 /* AppDelegate.swift */; };
 		547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D323C1D3C200714916 /* SceneDelegate.swift */; };
 		547184D923C1D3C200714916 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 547184D723C1D3C200714916 /* Main.storyboard */; };
@@ -19,6 +21,9 @@
 		547184E923C1D3C200714916 /* AlbumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184E823C1D3C200714916 /* AlbumiTests.swift */; };
 		547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184F723C1D61B00714916 /* MainCollectionViewController.swift */; };
 		54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */; };
+		54AA35C72403D3BA00B67593 /* ImageSimilarity.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */; };
+		54AA35CB2405430600B67593 /* SimilarImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CA2405430600B67593 /* SimilarImages.swift */; };
+		54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CC2407B5E500B67593 /* AssetWorks.swift */; };
 		CCC8A083BAB1E2A2408DCC7D /* Pods_AlbumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +43,8 @@
 		541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
 		541AC33B23EAF12D0087614E /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		541AC33D23EC2AF60087614E /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
+		541CE6DA241B6B3D00601020 /* PictureRemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemark.swift; sourceTree = "<group>"; };
+		541CE6DC241B875700601020 /* PictureRemarkIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemarkIO.swift; sourceTree = "<group>"; };
 		547184CE23C1D3C200714916 /* Albumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		547184D323C1D3C200714916 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,6 +57,9 @@
 		547184EA23C1D3C200714916 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		547184F723C1D61B00714916 /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
 		54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBPCollectionViewCompositionalLayoutInteroperability.swift; sourceTree = "<group>"; };
+		54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = ImageSimilarity.mlmodel; sourceTree = "<group>"; };
+		54AA35CA2405430600B67593 /* SimilarImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarImages.swift; sourceTree = "<group>"; };
+		54AA35CC2407B5E500B67593 /* AssetWorks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWorks.swift; sourceTree = "<group>"; };
 		77A5626E493BF740589BC834 /* Pods-Albumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.debug.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.debug.xcconfig"; sourceTree = "<group>"; };
 		87282266F10529680B1DDEAB /* Pods-Albumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.release.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.release.xcconfig"; sourceTree = "<group>"; };
 		B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Albumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +89,7 @@
 		547184C523C1D3C200714916 = {
 			isa = PBXGroup;
 			children = (
+				54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */,
 				547184D023C1D3C200714916 /* Albumi */,
 				547184E723C1D3C200714916 /* AlbumiTests */,
 				547184CF23C1D3C200714916 /* Products */,
@@ -133,6 +144,10 @@
 		547184F423C1D5B400714916 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				54AA35CA2405430600B67593 /* SimilarImages.swift */,
+				54AA35CC2407B5E500B67593 /* AssetWorks.swift */,
+				541CE6DA241B6B3D00601020 /* PictureRemark.swift */,
+				541CE6DC241B875700601020 /* PictureRemarkIO.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -308,6 +323,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-Albumi/Pods-Albumi-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/IBPCollectionViewCompositionalLayout/IBPCollectionViewCompositionalLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
@@ -315,6 +331,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IBPCollectionViewCompositionalLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -351,12 +368,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				541AC33A23EAB40B0087614E /* GridCollectionViewCell.swift in Sources */,
+				54AA35CB2405430600B67593 /* SimilarImages.swift in Sources */,
+				54AA35C72403D3BA00B67593 /* ImageSimilarity.mlmodel in Sources */,
 				541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */,
 				547184D223C1D3C200714916 /* AppDelegate.swift in Sources */,
 				547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */,
+				541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */,
 				547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */,
 				54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */,
 				541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */,
+				541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */,
+				54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -44,51 +44,12 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             infoFlag = !infoFlag
         }else{
 //            若infoLabel隱藏則讀取圖片資訊然後顯示，並disable其他button
-            var photoText = ""
-//            print(allAssets[assetIndex])
-            if allAssets[assetIndex].representsBurst {
-                photoText += "This photos is in burst mode.\n"
-            }
-//            print(allAssets[assetIndex].burstSelectionTypes)
-//            print(allAssets[assetIndex].burstIdentifier)
-            if let createData = allAssets[assetIndex].creationDate {
-                let dateFormat = DateFormatter()
-                dateFormat.dateFormat = "YYYY / MM / dd, HH:mm:ss"
-                photoText += "Create Date: \(dateFormat.string(from: createData))\n"
-            }
-            if let location = allAssets[assetIndex].location {
-                let geocoder = CLGeocoder()
-                geocoder.reverseGeocodeLocation(location, preferredLocale: nil, completionHandler: {(placemarks, error) in
-                    if let error = error {
-                        print(error)
-                    }
-                    if let placemarks = placemarks {
-                        let city = placemarks[0].locality ?? "Unknown City"
-                        let country = placemarks[0].country ?? "Unknown Country"
-                        photoText += "Location: \(city), \(country)"
-                        self.infoLabel.text = photoText
-                    }
-                })
-            }
-            if let modifyDate = allAssets[assetIndex].modificationDate {
-                let dateFormat = DateFormatter()
-                dateFormat.dateFormat = "YYYY / MM / dd, HH:mm:ss"
-                photoText += "Modify Date: \(dateFormat.string(from: modifyDate))\n"
-            }
-            photoText += "Size: \(allAssets[assetIndex].pixelHeight) Ｘ \(allAssets[assetIndex].pixelWidth) \n"
-            switch allAssets[assetIndex].sourceType {
-            case .typeUserLibrary:
-                photoText += "From: Local\n"
-            case .typeCloudShared:
-                photoText += "From: iCloud\n"
-            case .typeiTunesSynced:
-                photoText += "From: iTunes\n"
-            default:
-                break
-            }
-//            print(allAssets[assetIndex].mediaSubtypes)
-//            print(allAssets[assetIndex].playbackStyle)
-//            print(allAssets[assetIndex].duration)
+            let assetWork = AssetWorks()
+            var photoText = assetWork.assetInfo(assetList[assetIndex])
+            assetWork.assetLocation(assetList[assetIndex], handler: {location in
+                photoText += location
+                self.infoLabel.text = photoText
+            })
             infoLabel.text = photoText
             infoLabel.isHidden = false
             fullButton.isEnabled = false
@@ -102,7 +63,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     @IBAction func fullScreenView(){
 //        點擊full則推送出FullScreenVC，顯示模式設定為fullScreen
         if let controller = storyboard?.instantiateViewController(withIdentifier: "FullScreenViewController") as? FullScreenViewController{
-            controller.asset = allAssets[assetIndex]
+            controller.asset = assetList[assetIndex]
             controller.modalPresentationStyle = .fullScreen
             controller.showMode = .fullScreen
             present(controller, animated: true, completion: nil)
@@ -111,7 +72,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     @IBAction func editText(){
 //        點擊edit則推送出FullScreenVC，顯示模式設定為editText
         if let controller = storyboard?.instantiateViewController(withIdentifier: "FullScreenViewController") as? FullScreenViewController{
-            controller.asset = allAssets[assetIndex]
+            controller.asset = assetList[assetIndex]
 //            controller.modalPresentationStyle = .pageSheet
             controller.showMode = .editText
 //            若是iOS13以後則使用present新的modalPresentationStyle
@@ -124,13 +85,18 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         }
     }
     @IBAction func similaryImage(){
-        
+//        相似圖片分析，asset回傳給Main並清空assetlist
+        let mainController = self.navigationController?.viewControllers[0] as? MainCollectionViewController
+        mainController?.isAsset = assetList[assetIndex]
+        mainController?.assetList.removeAll()
+        mainController?.collectionView.reloadData()
+        self.navigationController?.popViewController(animated: true)
     }
     @IBAction func saveImage(){
         
     }
 //    讀取MainCollectionVC傳入的assets及index
-    var allAssets: [PHAsset] = []
+    var assetList: [PHAsset] = []
     var assetIndex = 0
 //        以infoFlag判斷infoLabel是否顯示
     var infoFlag = false
@@ -142,11 +108,9 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 //        從asset讀取圖片
-        let imageManager = PHImageManager()
-        imageManager.requestImage(for: allAssets[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: nil, resultHandler: {(image, info) in
-            if let image = image {
-                self.imageView.image = image
-            }
+        let requestImage = AssetWorks()
+        requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
+            self.imageView.image = image
         })
 //        設定左右滑跳到前(下)一張
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(viewSwipe(gesture:)))
@@ -162,41 +126,33 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         infoFlag = true
         info()
 //        設定左右滑的動畫並切換圖片
+        let requestImage = AssetWorks()
+        let animation = CATransition()
+        animation.type = .push
+        animation.duration = 0.5
+        animation.delegate = self
+        animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         switch gesture.direction {
         case .left:
-            if assetIndex >= allAssets.count-1 {
+            if assetIndex >= assetList.count-1 {
                 assetIndex = 0
             }else{
                 assetIndex += 1
             }
-            let animation = CATransition()
-            animation.type = .push
             animation.subtype = .fromRight
-            animation.duration = 0.5
-            animation.delegate = self
-            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             self.detailView.layer.add(animation, forKey: "leftToRightTransition")
-            let imageManager = PHImageManager()
-            imageManager.requestImage(for: allAssets[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: nil, resultHandler: {(image, info) in
-                guard let image = image else {return}
+            requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
                 self.imageView.image = image
             })
         case .right:
             if assetIndex <= 0 {
-                assetIndex = allAssets.count-1
+                assetIndex = assetList.count-1
             }else{
                 assetIndex -= 1
             }
-            let animation = CATransition()
-            animation.type = .push
             animation.subtype = .fromLeft
-            animation.duration = 0.5
-            animation.delegate = self
-            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             self.detailView.layer.add(animation, forKey: "leftToLeftTransition")
-            let imageManager = PHImageManager()
-            imageManager.requestImage(for: allAssets[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: nil, resultHandler: {(image, info) in
-                guard let image = image else {return}
+            requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
                 self.imageView.image = image
             })
         default:
@@ -206,7 +162,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        設定欄位的高度
+//        設定各欄位的高度
         switch indexPath.row{
         case 0:
             return UIScreen.main.bounds.height * 0.70

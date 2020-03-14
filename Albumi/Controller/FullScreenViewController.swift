@@ -26,11 +26,11 @@ class FullScreenViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
 //        讀取圖片
-        let imageManager = PHImageManager()
         guard  let asset = asset else {
             return
         }
-        imageManager.requestImage(for: asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, options: nil, resultHandler: {(image, info) in
+        let requestImage = AssetWorks()
+        requestImage.assetToUIImage(asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
             self.imageView.image = image
         })
 //        依照模式設定隱藏物件

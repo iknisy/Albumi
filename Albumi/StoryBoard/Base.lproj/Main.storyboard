@@ -66,9 +66,15 @@
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="排序"/>
+                                <connections>
+                                    <action selector="sequenceAction" destination="x4l-kL-xmW" eventType="touchDown" id="vPL-3B-RHJ"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="sequenceButton" destination="yir-Wd-Wle" id="oI6-du-qYE"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f85-Uh-hnH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -258,7 +264,7 @@
         <!--Navigation Controller-->
         <scene sceneID="7t9-lJ-oAe">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="alW-Ll-vz1">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

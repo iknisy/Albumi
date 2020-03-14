@@ -3,20 +3,26 @@ PODS:
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - IBPCollectionViewCompositionalLayout (0.6.6)
+  - NVActivityIndicatorView (4.8.0):
+    - NVActivityIndicatorView/Presenter (= 4.8.0)
+  - NVActivityIndicatorView/Presenter (4.8.0)
 
 DEPENDENCIES:
   - FMDB
   - IBPCollectionViewCompositionalLayout
+  - NVActivityIndicatorView
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FMDB
     - IBPCollectionViewCompositionalLayout
+    - NVActivityIndicatorView
 
 SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   IBPCollectionViewCompositionalLayout: 65967f7f7f99409684d54b26be21ef877e1913da
+  NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
 
-PODFILE CHECKSUM: 40cebf63b74505ac9e8bd8f6bd34a92c5b4c42bd
+PODFILE CHECKSUM: 9e3a1f52c3dd85496d49f370c0f07fb00b96ad35
 
 COCOAPODS: 1.6.1

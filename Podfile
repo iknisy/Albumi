@@ -8,6 +8,7 @@ target 'Albumi' do
   # Pods for Albumi
   pod 'IBPCollectionViewCompositionalLayout'
   pod 'FMDB'
+  pod 'NVActivityIndicatorView'
   
   target 'AlbumiTests' do
     inherit! :search_paths
