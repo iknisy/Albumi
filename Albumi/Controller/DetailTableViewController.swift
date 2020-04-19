@@ -24,7 +24,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     }
     @IBOutlet var infoButton: UIButton! {
         didSet{
-//            設定成可完整顯示Hide Info
+//            設定成可完整顯示"Hide Info"
             infoButton.titleLabel?.numberOfLines = 0
         }
     }
@@ -41,7 +41,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             siButton.isEnabled = true
             saveButton.isEnabled = true
             infoButton.setTitle("Info", for: .normal)
-            infoFlag = !infoFlag
+            infoFlag = false
         }else{
 //            若infoLabel隱藏則讀取圖片資訊然後顯示，並disable其他button
             let assetWork = AssetWorks()
@@ -57,31 +57,26 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             siButton.isEnabled = false
             saveButton.isEnabled = false
             infoButton.setTitle("Hide\nInfo", for: .normal)
-            infoFlag = !infoFlag
+            infoFlag = true
         }
     }
     @IBAction func fullScreenView(){
-//        點擊full則推送出FullScreenVC，顯示模式設定為fullScreen
+//        全螢幕顯示圖片
         if let controller = storyboard?.instantiateViewController(withIdentifier: "FullScreenViewController") as? FullScreenViewController{
             controller.asset = assetList[assetIndex]
             controller.modalPresentationStyle = .fullScreen
-            controller.showMode = .fullScreen
+            if remark != nil {
+                controller.textData = remark
+            }
             present(controller, animated: true, completion: nil)
         }
     }
     @IBAction func editText(){
-//        點擊edit則推送出FullScreenVC，顯示模式設定為editText
-        if let controller = storyboard?.instantiateViewController(withIdentifier: "FullScreenViewController") as? FullScreenViewController{
+//        編輯文字的view
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "EditTextViewController") as? EditTextViewController{
             controller.asset = assetList[assetIndex]
-//            controller.modalPresentationStyle = .pageSheet
-            controller.showMode = .editText
-//            若是iOS13以後則使用present新的modalPresentationStyle
-//            若是iOS12以前則使用show
-            if #available(iOS 13, *){
-                present(controller, animated: true, completion: nil)
-            }else{
-                show(controller, sender: nil)
-            }
+            controller.textData = remark
+            show(controller, sender: nil)
         }
     }
     @IBAction func similaryImage(){
@@ -95,6 +90,10 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     @IBAction func saveImage(){
         
     }
+//    顯示圖片文字的TextView
+    var textView: UITextView?
+//    儲存從ＤＢ讀取到的資料，以便傳給其他controller
+    var remark: PictureRemark?
 //    讀取MainCollectionVC傳入的assets及index
     var assetList: [PHAsset] = []
     var assetIndex = 0
@@ -109,17 +108,18 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 //        從asset讀取圖片
         let requestImage = AssetWorks()
-        requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
+        requestImage.assetToUIImage(assetList[assetIndex], targetSize: CGSize(width: assetList[assetIndex].pixelWidth, height: assetList[assetIndex].pixelHeight), contentMode: .aspectFit, handler: {(image) in
             self.imageView.image = image
+//            設定textView
+            self.setRemark()
         })
-//        設定左右滑跳到前(下)一張
+//        設定左右滑跳到前(下)一張的手勢
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(viewSwipe(gesture:)))
         swipeLeft.direction = .left
         detailView.addGestureRecognizer(swipeLeft)
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(viewSwipe(gesture:)))
         swipeRight.direction = .right
         detailView.addGestureRecognizer(swipeRight)
-        detailView.isUserInteractionEnabled = true
     }
     @objc func viewSwipe(gesture: UISwipeGestureRecognizer){
 //        滑動後恢復infoLabel的狀態
@@ -141,8 +141,15 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             }
             animation.subtype = .fromRight
             self.detailView.layer.add(animation, forKey: "leftToRightTransition")
-            requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
+            requestImage.assetToUIImage(assetList[assetIndex], targetSize: CGSize(width: assetList[assetIndex].pixelWidth, height: assetList[assetIndex].pixelHeight), contentMode: .aspectFit, handler: {(image) in
                 self.imageView.image = image
+//                清空textView
+                if self.textView != nil {
+                    self.textView!.removeFromSuperview()
+                    self.textView = nil
+                }
+//                設定textView
+                self.setRemark()
             })
         case .right:
             if assetIndex <= 0 {
@@ -152,13 +159,54 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             }
             animation.subtype = .fromLeft
             self.detailView.layer.add(animation, forKey: "leftToLeftTransition")
-            requestImage.assetToUIImage(assetList[assetIndex], targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
+            requestImage.assetToUIImage(assetList[assetIndex], targetSize: CGSize(width: assetList[assetIndex].pixelWidth, height: assetList[assetIndex].pixelHeight), contentMode: .aspectFit, handler: {(image) in
                 self.imageView.image = image
+//                清空textView
+                if self.textView != nil {
+                    self.textView!.removeFromSuperview()
+                    self.textView = nil
+                }
+//                設定textView
+                self.setRemark()
             })
         default:
             break
         }
-        
+    }
+    func setRemark(){
+        if let remark = PictureRemarkIO.shared.queryData(with: assetList[assetIndex].localIdentifier) {
+//            找出縮放比例
+            let scale = (imageView.bounds.width / imageView.image!.size.width) < (imageView.bounds.height / imageView.image!.size.height) ? (imageView.bounds.width / imageView.image!.size.width) : (imageView.bounds.height / imageView.image!.size.height)
+//            找出縮放後的textView原點
+            let positionX = imageView.frame.midX + CGFloat(remark.locationX) * scale
+            let positionY = imageView.frame.midY + CGFloat(remark.locationY) * scale
+//            textView細項設定
+            textView = UITextView(frame: CGRect(x: positionX, y: positionY, width: imageView.bounds.width, height: imageView.bounds.height))
+            textView!.text = remark.text
+            textView!.font = UIFont.systemFont(ofSize: CGFloat(remark.size) * scale)
+            textView!.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: remark.colorString)
+            textView!.backgroundColor = nil
+            textView!.isEditable = false
+            textView!.isUserInteractionEnabled = false
+//            將textView加入view
+            self.view.addSubview(textView!)
+//            儲存ＤＢ讀到的資料
+            self.remark = remark
+        }else{
+//            ＤＢ沒有資料，清空儲存資料的變數
+            remark = nil
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        清空textView
+        if self.textView != nil {
+            self.textView!.removeFromSuperview()
+            self.textView = nil
+        }
+        if imageView.image != nil {
+            setRemark()
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

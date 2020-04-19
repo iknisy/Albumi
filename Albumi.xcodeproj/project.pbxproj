@@ -13,6 +13,7 @@
 		541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33D23EC2AF60087614E /* FullScreenViewController.swift */; };
 		541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DA241B6B3D00601020 /* PictureRemark.swift */; };
 		541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DC241B875700601020 /* PictureRemarkIO.swift */; };
+		545DC4FE24306BA3000DA5E7 /* EditTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */; };
 		547184D223C1D3C200714916 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D123C1D3C200714916 /* AppDelegate.swift */; };
 		547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D323C1D3C200714916 /* SceneDelegate.swift */; };
 		547184D923C1D3C200714916 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 547184D723C1D3C200714916 /* Main.storyboard */; };
@@ -45,6 +46,7 @@
 		541AC33D23EC2AF60087614E /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
 		541CE6DA241B6B3D00601020 /* PictureRemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemark.swift; sourceTree = "<group>"; };
 		541CE6DC241B875700601020 /* PictureRemarkIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemarkIO.swift; sourceTree = "<group>"; };
+		545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextViewController.swift; sourceTree = "<group>"; };
 		547184CE23C1D3C200714916 /* Albumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		547184D323C1D3C200714916 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				547184F723C1D61B00714916 /* MainCollectionViewController.swift */,
 				541AC33B23EAF12D0087614E /* DetailTableViewController.swift */,
 				541AC33D23EC2AF60087614E /* FullScreenViewController.swift */,
+				545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Albumi/Pods-Albumi-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
+				"${BUILT_PRODUCTS_DIR}/FlexColorPicker/FlexColorPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/IBPCollectionViewCompositionalLayout/IBPCollectionViewCompositionalLayout.framework",
 				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 			);
@@ -330,6 +334,7 @@
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FlexColorPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IBPCollectionViewCompositionalLayout.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 			);
@@ -379,6 +384,7 @@
 				541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */,
 				541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */,
 				54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */,
+				545DC4FE24306BA3000DA5E7 /* EditTextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

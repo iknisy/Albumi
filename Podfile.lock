@@ -1,4 +1,5 @@
 PODS:
+  - FlexColorPicker (1.2.1)
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -8,21 +9,24 @@ PODS:
   - NVActivityIndicatorView/Presenter (4.8.0)
 
 DEPENDENCIES:
+  - FlexColorPicker
   - FMDB
   - IBPCollectionViewCompositionalLayout
   - NVActivityIndicatorView
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - FlexColorPicker
     - FMDB
     - IBPCollectionViewCompositionalLayout
     - NVActivityIndicatorView
 
 SPEC CHECKSUMS:
+  FlexColorPicker: 2c6fe41cb33a650d5934fad75ab0e25df4b5af2f
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   IBPCollectionViewCompositionalLayout: 65967f7f7f99409684d54b26be21ef877e1913da
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
 
-PODFILE CHECKSUM: 9e3a1f52c3dd85496d49f370c0f07fb00b96ad35
+PODFILE CHECKSUM: f1a502437201c4a2aff1e02f0bf3a64c63979b4c
 
 COCOAPODS: 1.6.1

@@ -9,6 +9,7 @@ target 'Albumi' do
   pod 'IBPCollectionViewCompositionalLayout'
   pod 'FMDB'
   pod 'NVActivityIndicatorView'
+  pod 'FlexColorPicker'
   
   target 'AlbumiTests' do
     inherit! :search_paths

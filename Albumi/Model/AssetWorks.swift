@@ -15,7 +15,23 @@ class AssetWorks {
     func assetToUIImage (_ asset: PHAsset, targetSize: CGSize, contentMode: PHImageContentMode, options: PHImageRequestOptions? = nil, handler: @escaping (UIImage) -> Void) {
 //        Asset轉換成UIImage
         let imageManager = PHImageManager.default()
-        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: contentMode, options: options, resultHandler: {(resultImage, info) in
+        let option = PHImageRequestOptions()
+        option.isNetworkAccessAllowed = true
+        option.resizeMode = .none
+        option.deliveryMode = .highQualityFormat
+//        option.progressHandler = {(process, error, isStop, info) in
+//            if error != nil {
+//                print(error.debugDescription)
+//                return
+//            }
+//            if process == 1 {
+//                imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: contentMode, options: options ?? option, resultHandler: {(resultImage, info) in
+//                    guard let resultImage = resultImage else {return}
+//                    handler(resultImage)
+//                })
+//            }
+//        }
+        imageManager.requestImage(for: asset, targetSize: targetSize, contentMode: contentMode, options: options ?? option, resultHandler: {(resultImage, info) in
             guard let resultImage = resultImage else {return}
             handler(resultImage)
         })

@@ -12,16 +12,15 @@ import Photos
 class FullScreenViewController: UIViewController {
 
     @IBOutlet var imageView: UIImageView!
-    @IBOutlet var textLable: UILabel!
     @IBOutlet var textView: UITextView!
     @IBOutlet var closeButton: UIButton!
     @IBAction func close(){
         dismiss(animated: true, completion: nil)
     }
     
-    
+//    儲存DetailTableViewVC傳入的asset及ＤＢ資料
     var asset: PHAsset?
-    var showMode: FullScreenViewMode?
+    var textData: PictureRemark?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -30,22 +29,27 @@ class FullScreenViewController: UIViewController {
             return
         }
         let requestImage = AssetWorks()
-        requestImage.assetToUIImage(asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit, handler: {(image) in
+        requestImage.assetToUIImage(asset, targetSize: CGSize(width: asset.pixelWidth, height: asset.pixelHeight), contentMode: .aspectFit, handler: {(image) in
             self.imageView.image = image
+//            設定textView
+            self.setText()
         })
-//        依照模式設定隱藏物件
-        switch showMode {
-        case .fullScreen:
-            self.textView.isHidden = true
-        case .editText:
-            self.textLable.isHidden = true
-            self.closeButton.isHidden = true
-        default:
-            self.textView.isHidden = true
-            self.textLable.isHidden = true
-        }
     }
     
+    func setText() {
+        if let textData = textData {
+//            找出縮放比例
+            let scale = (imageView.bounds.width / imageView.image!.size.width) < (imageView.bounds.height / imageView.image!.size.height) ? (imageView.bounds.width / imageView.image!.size.width) : (imageView.bounds.height / imageView.image!.size.height)
+//            找出縮放後的textView原點
+            let positionX = imageView.frame.midX + CGFloat(textData.locationX) * scale
+            let positionY = imageView.frame.midY + CGFloat(textData.locationY) * scale
+//            textView細項設定
+            textView.frame = CGRect(x: positionX, y: positionY, width: imageView.bounds.width, height: imageView.bounds.height)
+            textView.font = UIFont.systemFont(ofSize: CGFloat(textData.size) * scale)
+            textView.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: textData.colorString)
+            textView.text = textData.text
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -59,7 +63,3 @@ class FullScreenViewController: UIViewController {
 
 }
 
-enum FullScreenViewMode {
-    case fullScreen
-    case editText
-}
