@@ -88,7 +88,53 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     @IBAction func saveImage(){
-        
+//        結合圖片與文字敘述，另存新檔
+        guard let image = imageView.image else {
+            return
+        }
+//        新建一張畫布，大小與image一樣大
+        UIGraphicsBeginImageContextWithOptions(image.size, false, 1)
+//        將圖繪在畫布裡
+        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
+//        將textView畫進畫布
+        if textView != nil, remark != nil {
+//            宣告跟原圖一樣大小的textView再繪圖
+            let scale = CGFloat(remark!.size) / textView!.font!.pointSize
+            let tempView = UITextView(frame: CGRect(x: image.size.width / 2 + CGFloat(remark!.locationX), y: image.size.height / 2 + CGFloat(remark!.locationY), width: imageView.contentClippingRect.width * scale, height: imageView.contentClippingRect.height * scale))
+//            將此view文字設定成跟textView一樣
+            tempView.text = remark?.text
+            tempView.font = textView?.font?.withSize(CGFloat(remark!.size))
+            tempView.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: remark!.colorString)
+            tempView.backgroundColor = nil
+//            大概是一個版本issue，iOS13版與12版需使用不同func才能完整繪出整個textView
+            if #available(iOS 13, *){
+                guard let ctx = UIGraphicsGetCurrentContext() else {return}
+//                ctx.saveGState()
+                ctx.translateBy(x: tempView.frame.origin.x, y: tempView.frame.origin.y)
+                tempView.layer.render(in: ctx)
+//                ctx.restoreGState()
+            }else{
+                tempView.drawHierarchy(in: tempView.frame, afterScreenUpdates: true)
+            }
+        }
+//        儲存畫布
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+//        關閉畫布
+        UIGraphicsEndImageContext()
+        if let image = newImage {
+//            將圖存在設備裡
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+//            設定popover提示使用者
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "PopoverViewController") as? PopoverViewController {
+                controller.modalPresentationStyle = .popover
+                controller.popoverPresentationController?.delegate = self
+                controller.popoverPresentationController?.sourceView = saveButton
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: saveButton.frame.size)
+                controller.labelString = "  Image saved"
+                controller.labelColor = UIColor.blue
+                present(controller, animated: true, completion: nil)
+            }
+        }
     }
 //    顯示圖片文字的TextView
     var textView: UITextView?
@@ -181,15 +227,15 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             let positionX = imageView.frame.midX + CGFloat(remark.locationX) * scale
             let positionY = imageView.frame.midY + CGFloat(remark.locationY) * scale
 //            textView細項設定
-            textView = UITextView(frame: CGRect(x: positionX, y: positionY, width: imageView.bounds.width, height: imageView.bounds.height))
+            textView = UITextView(frame: CGRect(x: positionX, y: positionY, width: imageView.contentClippingRect.width, height: imageView.contentClippingRect.height))
             textView!.text = remark.text
             textView!.font = UIFont.systemFont(ofSize: CGFloat(remark.size) * scale)
             textView!.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: remark.colorString)
             textView!.backgroundColor = nil
             textView!.isEditable = false
             textView!.isUserInteractionEnabled = false
-//            將textView加入view
-            self.view.addSubview(textView!)
+//            將textView加入tableview
+            self.tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.addSubview(textView!)
 //            儲存ＤＢ讀到的資料
             self.remark = remark
         }else{
@@ -297,4 +343,32 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //    }
     
 
+}
+
+extension DetailTableViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+
+extension UIImageView {
+//    回傳View裡面的圖片的實際frame
+    var contentClippingRect: CGRect {
+        guard let image = image else { return bounds }
+        guard contentMode == .scaleAspectFit else { return bounds }
+        guard image.size.width > 0 && image.size.height > 0 else { return bounds }
+
+        let scale: CGFloat
+        if image.size.width > image.size.height {
+            scale = bounds.width / image.size.width
+        } else {
+            scale = bounds.height / image.size.height
+        }
+
+        let size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
+        let x = (bounds.width - size.width) / 2.0 + frame.origin.x
+        let y = (bounds.height - size.height) / 2.0 + frame.origin.y
+
+        return CGRect(x: x, y: y, width: size.width, height: size.height)
+    }
 }

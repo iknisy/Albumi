@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2FB33ED9CD17DA75333EAEF9 /* Pods_Albumi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */; };
+		541ABA402462AD1C001C31EA /* PopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541ABA3F2462AD1C001C31EA /* PopoverViewController.swift */; };
 		541AC33A23EAB40B0087614E /* GridCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */; };
 		541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33B23EAF12D0087614E /* DetailTableViewController.swift */; };
 		541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541AC33D23EC2AF60087614E /* FullScreenViewController.swift */; };
@@ -41,6 +42,8 @@
 /* Begin PBXFileReference section */
 		20589AC083EC1C80F535255E /* Pods-AlbumiTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlbumiTests.debug.xcconfig"; path = "Target Support Files/Pods-AlbumiTests/Pods-AlbumiTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AlbumiTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		541ABA3B245D6EDD001C31EA /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
+		541ABA3F2462AD1C001C31EA /* PopoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverViewController.swift; sourceTree = "<group>"; };
 		541AC33923EAB40B0087614E /* GridCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionViewCell.swift; sourceTree = "<group>"; };
 		541AC33B23EAF12D0087614E /* DetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTableViewController.swift; sourceTree = "<group>"; };
 		541AC33D23EC2AF60087614E /* FullScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +172,7 @@
 				541AC33B23EAF12D0087614E /* DetailTableViewController.swift */,
 				541AC33D23EC2AF60087614E /* FullScreenViewController.swift */,
 				545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */,
+				541ABA3F2462AD1C001C31EA /* PopoverViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -187,6 +191,7 @@
 		F06795799DC96F5BA17ACD08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				541ABA3B245D6EDD001C31EA /* iAd.framework */,
 				B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */,
 				4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */,
 			);
@@ -378,6 +383,7 @@
 				541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */,
 				547184D223C1D3C200714916 /* AppDelegate.swift in Sources */,
 				547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */,
+				541ABA402462AD1C001C31EA /* PopoverViewController.swift in Sources */,
 				541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */,
 				547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */,
 				54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */,

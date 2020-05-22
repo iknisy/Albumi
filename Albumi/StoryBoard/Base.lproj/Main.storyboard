@@ -8,6 +8,35 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Popover View Controller-->
+        <scene sceneID="vOu-w7-fbP">
+            <objects>
+                <tableViewController storyboardIdentifier="PopoverViewController" id="zwc-OM-ciW" customClass="PopoverViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="E1O-nJ-7HF">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bu1-EN-ApY">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                            <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="zwc-OM-ciW" id="KR1-4F-Ql4"/>
+                            <outlet property="delegate" destination="zwc-OM-ciW" id="yO6-yi-UWN"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="label" destination="Bu1-EN-ApY" id="alX-tB-Ltj"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DLT-ru-DRx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="754" y="-503"/>
+        </scene>
         <!--Main Collection View Controller-->
         <scene sceneID="0Y2-3U-rmA">
             <objects>
@@ -44,7 +73,6 @@
                                 <size key="customSize" width="100" height="100"/>
                                 <connections>
                                     <outlet property="gridImageView" destination="IaY-bs-d3S" id="B7h-Vc-BcE"/>
-                                    <segue destination="Fd2-Mq-IFJ" kind="show" identifier="showDetail" id="wuk-xK-LKb"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>
@@ -55,17 +83,22 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="gSu-gN-YJC">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="vfX-BG-6WG">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="eKZ-C3-c6r">
-                                <rect key="frame" x="20" y="7" width="92" height="30"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eKZ-C3-c6r">
+                                <rect key="frame" x="20" y="0.0" width="46" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="多選"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="delete"/>
+                                <connections>
+                                    <action selector="deletePhotoAction" destination="x4l-kL-xmW" eventType="touchDown" id="1J3-hA-5Ho"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="IrN-1k-AqI">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yir-Wd-Wle">
                                 <rect key="frame" x="302" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="排序"/>
+                                <state key="normal" title=" "/>
                                 <connections>
                                     <action selector="sequenceAction" destination="x4l-kL-xmW" eventType="touchDown" id="vPL-3B-RHJ"/>
                                 </connections>
@@ -73,6 +106,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="deletePhotoButton" destination="eKZ-C3-c6r" id="P7z-rA-JUX"/>
                         <outlet property="sequenceButton" destination="yir-Wd-Wle" id="oI6-du-qYE"/>
                     </connections>
                 </collectionViewController>
@@ -83,7 +117,7 @@
         <!--Detail Table View Controller-->
         <scene sceneID="xya-Hj-qDn">
             <objects>
-                <tableViewController id="Fd2-Mq-IFJ" customClass="DetailTableViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DetailTableViewController" id="Fd2-Mq-IFJ" customClass="DetailTableViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aim-1B-a5D">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -209,7 +243,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="757"/>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MnC-NX-LeV">
-                                <rect key="frame" x="0.0" y="44" width="414" height="749"/>
+                                <rect key="frame" x="67" y="208" width="289" height="414"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -364,4 +398,7 @@
             <point key="canvasLocation" x="-134.78260869565219" y="141.96428571428569"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="delete" width="23" height="25"/>
+    </resources>
 </document>

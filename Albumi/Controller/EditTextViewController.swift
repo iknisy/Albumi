@@ -57,7 +57,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
 //        清除文字，恢復預設值
         textView.text = ""
         textView.textColor = UIColor.white
-        textView.frame = imageView.frame
+        textView.frame = imageView.contentClippingRect
         textView.font = textView.font?.withSize(20)
         fontSize.text = "20"
     }
@@ -148,6 +148,11 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
         navigationItem.rightBarButtonItem = saveBar
     }
     @objc func saveText(){
+        if textView.text == "" {
+//            若textView沒有內容則從ＤＢ刪除原有資料
+            _ = PictureRemarkIO.shared.deleteData(where: asset!.localIdentifier)
+            return
+        }
 //        找出縮放比例
         let scale = (imageView.bounds.width / imageView.image!.size.width) < (imageView.bounds.height / imageView.image!.size.height) ? (imageView.bounds.width / imageView.image!.size.width) : (imageView.bounds.height / imageView.image!.size.height)
 //        找出縮放後的textView原點
@@ -165,6 +170,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         if let asset = asset, updateFlag == false {
 //            在所有autolayout調整完後再設定textview
             setText(asset)
@@ -178,12 +184,15 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             let positionX = imageView.frame.midX + CGFloat(textData.locationX) * scale
             let positionY = imageView.frame.midY + CGFloat(textData.locationY) * scale
 //            textView細項設定
-            textView.frame = CGRect(x: positionX, y: positionY, width: imageView.bounds.width, height: imageView.bounds.height)
+            textView.frame = CGRect(x: positionX, y: positionY, width: imageView.contentClippingRect.width, height: imageView.contentClippingRect.height)
             fontSize.text = Int(CGFloat(textData.size) * scale).description
             textView.text = textData.text
             textView.font = UIFont.systemFont(ofSize: CGFloat(textData.size) * scale)
             textView.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: textData.colorString)
             updateFlag = true
+        }else{
+//            若ＤＢ沒有資料，則預設textView的frame跟圖片一樣
+            textView.frame = imageView.contentClippingRect
         }
     }
     

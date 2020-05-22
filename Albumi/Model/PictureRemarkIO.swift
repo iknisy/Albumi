@@ -189,7 +189,7 @@ class PictureRemarkIO: NSObject {
     func deleteData(where locolIdentifier: String) -> Bool{
         var result = false
         if openConnection() {
-            let deleteSQL = "delete from PictureRemark where\(sql_LocalID)=\'\(locolIdentifier)\'"
+            let deleteSQL = "delete from PictureRemark where \(sql_LocalID)=\'\(locolIdentifier)\'"
             do{
                 try database.executeUpdate(deleteSQL, values: nil)
                 result = true

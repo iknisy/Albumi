@@ -11,7 +11,7 @@ import Photos
 import IBPCollectionViewCompositionalLayout
 import NVActivityIndicatorView
 
-class MainCollectionViewController: UICollectionViewController {
+class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryChangeObserver, UIPopoverPresentationControllerDelegate {
 
     @IBOutlet weak var sequenceButton: UIButton!
     @IBAction func sequenceAction(){
@@ -20,15 +20,54 @@ class MainCollectionViewController: UICollectionViewController {
 //            排序Button若為Clear，清除所有分析結果，畫面恢復為顯示photo library
             self.assetList = []
             self.isAsset = nil
-            sequenceButton.setTitle("排序", for: .normal)
+            sequenceButton.setTitle(" ", for: .normal)
             self.loadPhotos()
             self.collectionView.reloadData()
         default:
             break
         }
     }
+    @IBOutlet weak var deletePhotoButton: UIButton!
+    @IBAction func deletePhotoAction(){
+        if deleteFlag {
+//            若是delete mode就切換成normal mode
+            deletePhotoButton.tintColor = UIColor.black
+            deleteFlag = false
+//            使用popover提示使用者
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "PopoverViewController") as? PopoverViewController {
+                controller.modalPresentationStyle = .popover
+                controller.popoverPresentationController?.delegate = self
+                controller.popoverPresentationController?.sourceView = deletePhotoButton
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
+                controller.labelString = "  Normal Mode"
+                controller.labelColor = UIColor.black
+                present(controller, animated: true, completion: nil)
+            }
+        }else{
+//            若是normal mode就切換成delete mode
+            deletePhotoButton.tintColor = UIColor.red
+            deleteFlag = true
+//            使用popover提示使用者
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "PopoverViewController") as? PopoverViewController {
+                controller.modalPresentationStyle = .popover
+                controller.popoverPresentationController?.delegate = self
+                controller.popoverPresentationController?.sourceView = deletePhotoButton
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
+                controller.labelString = "  Delete Mode"
+                controller.labelColor = UIColor.red
+                present(controller, animated: true, completion: nil)
+            }
+        }
+    }
+    
 //    用來儲存所有圖片
     var assetList: [PHAsset] = []
+//    儲存從設備fetch圖片的結果
+    var assetFetchResult: PHFetchResult<PHAsset> = PHFetchResult.init()
+//    儲存設備上的圖片增減狀態
+    var changes: [PHFetchResultChangeDetails<PHAsset>] = []
+//    delete mode的flag
+    var deleteFlag = false
 //    用來儲存指定要分析相似圖片的Asset
     var isAsset: PHAsset?
 //    設定預設的Layout
@@ -69,6 +108,8 @@ class MainCollectionViewController: UICollectionViewController {
 //        設定成自定的Layout  （下兩行應該是一樣的作用）
         self.collectionView.collectionViewLayout = initCollectionViewLayout
 //        self.collectionView.setCollectionViewLayout(initCollectionViewLayout, animated: false)
+//        註冊設備相簿的改變通知
+        PHPhotoLibrary.shared().register(self)
         loadPhotos()
     }
     func loadPhotos(){
@@ -98,14 +139,15 @@ class MainCollectionViewController: UICollectionViewController {
                 NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
             }
         }else if assetList.count == 0{
+//            若asset庫沒有物件，則讀取設備內的圖片
 //            讀取中，動畫開始運作
             nvActiveView.startAnimating()
 //            讀取設備內的圖片資料，並以creationDate降冪排列，然後存入allAssets
             let phoptions = PHFetchOptions()
             phoptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-            let assets = PHAsset.fetchAssets(with: .image, options: phoptions)
-            for i in 0..<assets.count {
-                assetList.append(assets.object(at: i))
+            assetFetchResult = PHAsset.fetchAssets(with: .image, options: phoptions)
+            for i in 0..<assetFetchResult.count {
+                assetList.append(assetFetchResult.object(at: i))
             }
 //            停止動畫並移除
             self.nvActiveView.stopAnimating()
@@ -130,6 +172,82 @@ class MainCollectionViewController: UICollectionViewController {
         default:
             processLabel.text = "Analyzing Photos... \(persent)%"
         }
+    }
+    
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+//        偵測到設備內的圖片有增減以後會call這個func
+        if let change = changeInstance.changeDetails(for: assetFetchResult) {
+//            先將圖片增減改變儲存後待處理
+            changes.append(change)
+        }
+//        若是delete mode則直接處理圖片的增減
+        if deleteFlag {
+            assetChanged()
+        }
+    }
+    
+    func assetChanged(){
+//        處理圖片的增減（動畫更新View
+        guard changes.count > 0 else {return}
+//        分別儲存新增或移除的圖片index
+        var removed: IndexSet?
+        var inserted: IndexSet?
+        var changed: IndexSet?
+//        是否需reload整個view的flag
+        var reloadFlag = false
+//        for迴圈處理每次改變
+        for changes in self.changes {
+//            紀錄改變後的fetch結果
+            assetFetchResult = changes.fetchResultAfterChanges
+//            更新asset庫的物件
+            self.assetList.removeAll()
+            for i in 0..<self.assetFetchResult.count {
+                self.assetList.append(self.assetFetchResult.object(at: i))
+            }
+//            若增減的變動不大，會使用動畫更新view
+            if changes.hasIncrementalChanges {
+//                分開儲存圖片增減改變的index
+                removed = changes.removedIndexes
+                inserted = changes.insertedIndexes
+                changed = changes.changedIndexes
+//                刪除改變順序以後刪除的圖片
+                if changed != nil, let removed = changes.removedIndexes {
+                    changed!.subtract(removed)
+                }
+            }else{
+//                若增減的變動過大，則設定flag直接reload整個view
+                reloadFlag = true
+            }
+        }
+//        根據以上紀錄的增減執行動作
+        if reloadFlag {
+//            若flag有設定，直接reload整個view
+            self.collectionView.reloadData()
+        }else{
+//            call collectionView的增減更新動畫，此動作需在main queue執行
+            DispatchQueue.main.async{
+                self.collectionView.performBatchUpdates({
+                    if let removed = removed, removed.count > 0 {
+                        self.collectionView.deleteItems(at: removed.map({IndexPath(item: $0, section: 0)}) )
+                    }
+                    if let inserted = inserted, inserted.count > 0 {
+                        self.collectionView.insertItems(at: inserted.map({IndexPath(item: $0, section: 0)}) )
+                    }
+                    if let changed = changed, changed.count > 0 {
+                        self.collectionView.reloadItems(at: changed.map({IndexPath(item: $0, section: 0)}) )
+                    }
+//                    changes.enumerateMoves({(fromIndex, toIndex) in
+//                        self.collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0), to: IndexPath(item: toIndex, section: 0))
+//                    })
+                }, completion: nil)
+            }
+        }
+//        動作完成，清除所有改變紀錄
+        self.changes.removeAll()
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
 
     /*
@@ -163,24 +281,51 @@ class MainCollectionViewController: UICollectionViewController {
         assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
             cell.gridImageView.image = image
         }
-    
         return cell
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showDetail" {
-            let destinationViewController = segue.destination as! DetailTableViewController
-            guard let indexPaths = collectionView.indexPathsForSelectedItems else{return}
-            destinationViewController.assetIndex = indexPaths[0].row
-            destinationViewController.assetList = assetList
-        }
-    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         loadPhotos()
+        assetChanged()
     }
 
     // MARK: UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if deleteFlag {
+//            若是delete mode，則刪除圖片
+//            刪除圖片的alert，message的地方增加空行放圖片
+            let delActController = UIAlertController(title: "Delete Confirm", message: "Do you want to delelte this Photo?\n\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+//            將圖片預覽圖放入alert提示使用者
+            let imageView = UIImageView(frame: CGRect(x: 60, y: 65, width: 150, height: 150))
+            guard let cell = self.collectionView.cellForItem(at: indexPath) as? GridCollectionViewCell else {return}
+            imageView.image = cell.gridImageView.image
+            delActController.view.addSubview(imageView)
+//            使用者確認刪除圖片的動作
+            let okAct = UIAlertAction(title: "OK", style: .destructive, handler: {_ in
+//                先從ＤＢ上刪除相關資料
+                _ = PictureRemarkIO.shared.deleteData(where: self.assetList[indexPath.row].localIdentifier)
+//                呼叫系統刪除圖片
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.deleteAssets(NSArray(object: self.assetList[indexPath.row]))
+                }, completionHandler: {(result, error) in
+                    if !result {
+                        print(error)
+                    }
+                })
+            })
+            delActController.addAction(okAct)
+            let cancelAct = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            delActController.addAction(cancelAct)
+            self.present(delActController, animated: true, completion: nil)
+        }else if let destinationViewController = storyboard?.instantiateViewController(withIdentifier:  "DetailTableViewController") as? DetailTableViewController{
+//            若是normal mode，則跳出DetailView
+            guard let indexPaths = collectionView.indexPathsForSelectedItems else{return}
+            destinationViewController.assetIndex = indexPaths[0].row
+            destinationViewController.assetList = assetList
+            show(destinationViewController, sender: nil)
+        }
+    }
 
     /*
     // Uncomment this method to specify if the specified item should be highlighted during tracking
