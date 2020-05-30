@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
 //        建立資料庫檔案
         _ = PictureRemarkIO.shared.createTable()
+//        初始化Google Mobile Ads SDK
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         return true
     }
 

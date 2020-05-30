@@ -10,6 +10,7 @@ import UIKit
 import Photos
 import IBPCollectionViewCompositionalLayout
 import NVActivityIndicatorView
+import GoogleMobileAds
 
 class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryChangeObserver, UIPopoverPresentationControllerDelegate {
 
@@ -95,6 +96,18 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
     let nvActiveView = NVActivityIndicatorView(frame: CGRect(x: (UIScreen.main.bounds.width/2-50), y: (UIScreen.main.bounds.height/2-50), width: 100, height: 100), type: .lineScalePulseOutRapid, color: UIColor.gray, padding: 20)
 //    宣告進度說明的label
     let processLabel = UILabel(frame: CGRect(x: 0, y: (UIScreen.main.bounds.height/2-100), width: UIScreen.main.bounds.width, height: 30))
+//    宣告廣告橫幅
+    lazy var adBannerView: GADBannerView = {
+        let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+//        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
+//        以下官方提供的測試用ID
+        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        adBannerView.delegate = self
+        adBannerView.rootViewController = self
+        return adBannerView
+    }()
+//    宣告獎勵廣告
+    var analyzingRewarded: GADRewardedAd?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +124,12 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 //        註冊設備相簿的改變通知
         PHPhotoLibrary.shared().register(self)
         loadPhotos()
+        
+//        設定GoogleMobileAds測試設備
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["a8ffedffeb5de5cf11194edd45471902429e1ecd"]
+//        向google請求廣告內容
+        adBannerView.load(GADRequest())
+        analyzingRewarded = createAndLoadRewardedAD()
     }
     func loadPhotos(){
 //        將動畫加入view
@@ -118,26 +137,15 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         if let isAsset = isAsset {
 //            若有指定asset，並且asset庫沒有物件則進行相似圖片分析工作
             if assetList.count != 0 {return}
-//            讀取中，動畫開始運作
-            nvActiveView.startAnimating()
-//            註冊Notification讓分析Model回傳進度
-            NotificationCenter.default.addObserver(self, selector: #selector(getProcess(noti:)), name: Notification.Name(rawValue: "MLprocess"), object: nil)
-//            開始分析
-            let SI = SimilarImages()
-            SI.findSimilarImages(asset: isAsset){assets in
-                self.assetList = assets
-//                向NotificationCenter回傳進度100％
-                NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
-//                重讀畫面
-                self.collectionView.reloadData()
-//                設定排序Button
-                self.sequenceButton.setTitle("Clear", for: .normal)
-//                停止動畫並移除
-                self.nvActiveView.stopAnimating()
-                self.nvActiveView.removeFromSuperview()
-//                移除Notification
-                NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
-            }
+//            防止廣告播完又run這段
+            assetList.append(isAsset)
+//            alert提示使用者看廣告
+            let noteAlertController = UIAlertController(title: "Please", message: "Look full ad when analyzing.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
+                self.analyzingSI(isAsset)
+            })
+            noteAlertController.addAction(okAction)
+            self.present(noteAlertController, animated: true, completion: nil)
         }else if assetList.count == 0{
 //            若asset庫沒有物件，則讀取設備內的圖片
 //            讀取中，動畫開始運作
@@ -152,6 +160,31 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 //            停止動畫並移除
             self.nvActiveView.stopAnimating()
             self.nvActiveView.removeFromSuperview()
+        }
+    }
+    
+    func analyzingSI(_ isAsset: PHAsset){
+//        讀取中，動畫開始運作
+        nvActiveView.startAnimating()
+//        讀取中，廣告開始運作
+        rewardedAdDisplay(analyzingRewarded!)
+//        註冊Notification讓分析Model回傳進度
+        NotificationCenter.default.addObserver(self, selector: #selector(getProcess(noti:)), name: Notification.Name(rawValue: "MLprocess"), object: nil)
+//        開始分析
+        let SI = SimilarImages()
+        SI.findSimilarImages(asset: isAsset){assets in
+            self.assetList = assets
+//            向NotificationCenter回傳進度100％
+            NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
+//            重讀畫面
+            self.collectionView.reloadData()
+//            設定排序Button
+            self.sequenceButton.setTitle("Clear", for: .normal)
+//            停止動畫並移除
+            self.nvActiveView.stopAnimating()
+            self.nvActiveView.removeFromSuperview()
+//            移除Notification
+            NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
         }
     }
     @objc func getProcess(noti: Notification) {
@@ -289,6 +322,12 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         loadPhotos()
         assetChanged()
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        增加collectionView最下面的空間讓廣告不會擋住cell
+        collectionView.contentInset.bottom = 100
+    }
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -356,4 +395,64 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
     }
     */
 
+}
+
+extension MainCollectionViewController: GADBannerViewDelegate {
+//    橫幅廣告的delegate
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+//        成功讀取廣告時呼叫此func，加入view
+        adBannerView.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height - adBannerView.frame.size.height)
+        self.view.addSubview(adBannerView)
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+//        讀取廣告失敗時呼叫此func
+        print("Receive ads error:")
+        print(error)
+    }
+}
+extension MainCollectionViewController: GADRewardedAdDelegate {
+//    獎勵廣告的delegate
+    // Tells the delegate that the user earned a reward.
+    func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
+//        獲得獎勵時呼叫此func
+      print("Reward received with currency: \(reward.type), amount \(reward.amount).")
+    }
+//    // Tells the delegate that the rewarded ad was presented.
+//    func rewardedAdDidPresent(_ rewardedAd: GADRewardedAd) {
+//      print("Rewarded ad presented.")
+//    }
+//    // Tells the delegate that the rewarded ad failed to present.
+//    func rewardedAd(_ rewardedAd: GADRewardedAd, didFailToPresentWithError error: Error) {
+//      print("Rewarded ad failed to present.")
+//    }
+    // Tells the delegate that the rewarded ad was dismissed.
+    func rewardedAdDidDismiss(_ rewardedAd: GADRewardedAd) {
+//        廣告視窗關閉時呼叫次func
+//        重新再讀取新的廣告內容
+      analyzingRewarded = createAndLoadRewardedAD()
+    }
+    
+    func createAndLoadRewardedAD() -> GADRewardedAd{
+//        宣告一個新的廣告
+//        let adID = "ca-app-pub-3920585268111253/7334475320"
+//        以下為官方測試用ID
+        let adID = "ca-app-pub-3940256099942544/1712485313"
+        let rewardedAd = GADRewardedAd(adUnitID: adID)
+//        讀取廣告內容
+        rewardedAd.load(GADRequest(), completionHandler: {error in
+            if let error = error {
+                print("Loading fail: \(error)")
+            }else{
+                print("Loading Succeeded.")
+            }
+        })
+        return rewardedAd
+    }
+    func rewardedAdDisplay(_ rewardedAd: GADRewardedAd) {
+        if rewardedAd.isReady {
+//            確認廣告已準備好才跳出廣告視窗
+            rewardedAd.present(fromRootViewController: self, delegate: self)
+        }
+    }
 }

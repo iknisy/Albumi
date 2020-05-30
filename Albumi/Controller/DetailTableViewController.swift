@@ -9,6 +9,7 @@
 import UIKit
 import Photos
 import CoreLocation
+import GoogleMobileAds
 
 class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 
@@ -145,6 +146,17 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     var assetIndex = 0
 //        以infoFlag判斷infoLabel是否顯示
     var infoFlag = false
+//    宣告廣告橫幅
+    lazy var adBannerView: GADBannerView = {
+        let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
+//        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
+//        以下官方提供的測試用ID
+        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        adBannerView.delegate = self
+        adBannerView.rootViewController = self
+        return adBannerView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -166,6 +178,11 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(viewSwipe(gesture:)))
         swipeRight.direction = .right
         detailView.addGestureRecognizer(swipeRight)
+        
+//        設定GoogleMobileAds測試設備
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = (["a8ffedffeb5de5cf11194edd45471902429e1ecd", kGADSimulatorID] as! [String])
+//        向google請求廣告內容
+        adBannerView.load(GADRequest())
     }
     @objc func viewSwipe(gesture: UISwipeGestureRecognizer){
 //        滑動後恢復infoLabel的狀態
@@ -343,6 +360,21 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //    }
     
 
+}
+
+extension DetailTableViewController: GADBannerViewDelegate {
+//    橫幅廣告的delegate
+    func adViewDidReceiveAd(_ bannerView: GADBannerView) {
+//        成功讀取廣告時呼叫此func，加入view
+        adBannerView.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height - adBannerView.frame.size.height - (navigationController?.navigationBar.frame.maxY ?? 0))
+        self.view.addSubview(adBannerView)
+    }
+    
+    func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
+//        讀取廣告失敗時呼叫此func
+        print("Receive ads error:")
+        print(error)
+    }
 }
 
 extension DetailTableViewController: UIPopoverPresentationControllerDelegate {

@@ -10,6 +10,7 @@ target 'Albumi' do
   pod 'FMDB'
   pod 'NVActivityIndicatorView'
   pod 'FlexColorPicker'
+  pod 'Google-Mobile-Ads-SDK'
   
   target 'AlbumiTests' do
     inherit! :search_paths
