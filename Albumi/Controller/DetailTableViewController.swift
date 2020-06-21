@@ -12,23 +12,18 @@ import CoreLocation
 import GoogleMobileAds
 
 class DetailTableViewController: UITableViewController, CAAnimationDelegate {
-
+    // MARK: - IB
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var detailView: UIView!
     @IBOutlet var infoLabel: UILabel!{
         didSet{
 //            預設info欄位大小並隱藏
             infoLabel.isHidden = true
-            infoLabel.frame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width/4, y: 0), size: CGSize(width: UIScreen.main.bounds.width*3/4, height: (infoLabel.superview?.frame.height)!))
+            infoLabel.frame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width/4, y: -20), size: CGSize(width: UIScreen.main.bounds.width*3/4, height: (infoLabel.superview?.frame.height)!))
             infoLabel.numberOfLines = 0
         }
     }
-    @IBOutlet var infoButton: UIButton! {
-        didSet{
-//            設定成可完整顯示"Hide Info"
-            infoButton.titleLabel?.numberOfLines = 0
-        }
-    }
+    @IBOutlet var infoButton: UIButton!
     @IBOutlet var fullButton: UIButton!
     @IBOutlet var editButton: UIButton!
     @IBOutlet var siButton: UIButton!
@@ -41,7 +36,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             editButton.isEnabled = true
             siButton.isEnabled = true
             saveButton.isEnabled = true
-            infoButton.setTitle("Info", for: .normal)
+            infoButton.tintColor = self.view.tintColor
             infoFlag = false
         }else{
 //            若infoLabel隱藏則讀取圖片資訊然後顯示，並disable其他button
@@ -57,19 +52,17 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             editButton.isEnabled = false
             siButton.isEnabled = false
             saveButton.isEnabled = false
-            infoButton.setTitle("Hide\nInfo", for: .normal)
+            infoButton.tintColor = UIColor.darkGray
             infoFlag = true
         }
     }
     @IBAction func fullScreenView(){
 //        全螢幕顯示圖片
         if let controller = storyboard?.instantiateViewController(withIdentifier: "FullScreenViewController") as? FullScreenViewController{
-            controller.asset = assetList[assetIndex]
+            controller.assetList = assetList
+            controller.assetIndex = assetIndex
             controller.modalPresentationStyle = .fullScreen
-            if remark != nil {
-                controller.textData = remark
-            }
-            present(controller, animated: true, completion: nil)
+            present(controller, animated: false, completion: nil)
         }
     }
     @IBAction func editText(){
@@ -85,6 +78,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         let mainController = self.navigationController?.viewControllers[0] as? MainCollectionViewController
         mainController?.isAsset = assetList[assetIndex]
         mainController?.assetList.removeAll()
+        mainController?.assetThumbnail.removeAll()
         mainController?.collectionView.reloadData()
         self.navigationController?.popViewController(animated: true)
     }
@@ -98,14 +92,14 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //        將圖繪在畫布裡
         image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
 //        將textView畫進畫布
-        if textView != nil, remark != nil {
+        if let textView = textView, let remark = remark {
 //            宣告跟原圖一樣大小的textView再繪圖
-            let scale = CGFloat(remark!.size) / textView!.font!.pointSize
-            let tempView = UITextView(frame: CGRect(x: image.size.width / 2 + CGFloat(remark!.locationX), y: image.size.height / 2 + CGFloat(remark!.locationY), width: imageView.contentClippingRect.width * scale, height: imageView.contentClippingRect.height * scale))
+            let scale = CGFloat(remark.size) / textView.font!.pointSize
+            let tempView = UITextView(frame: CGRect(x: image.size.width / 2 + CGFloat(remark.locationX), y: image.size.height / 2 + CGFloat(remark.locationY), width: imageView.contentClippingRect.width * scale, height: imageView.contentClippingRect.height * scale))
 //            將此view文字設定成跟textView一樣
-            tempView.text = remark?.text
-            tempView.font = textView?.font?.withSize(CGFloat(remark!.size))
-            tempView.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: remark!.colorString)
+            tempView.text = remark.text
+            tempView.font = textView.font?.withSize(CGFloat(remark.size))
+            tempView.textColor = PictureRemarkIO.shared.hexToUIColor(hexString: remark.colorString)
             tempView.backgroundColor = nil
 //            大概是一個版本issue，iOS13版與12版需使用不同func才能完整繪出整個textView
             if #available(iOS 13, *){
@@ -132,11 +126,13 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
                 controller.popoverPresentationController?.sourceView = saveButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: saveButton.frame.size)
                 controller.labelString = "  Image saved"
-                controller.labelColor = UIColor.blue
+                controller.labelColor = self.view.tintColor
                 present(controller, animated: true, completion: nil)
             }
         }
     }
+    
+    // MARK: - var declear
 //    顯示圖片文字的TextView
     var textView: UITextView?
 //    儲存從ＤＢ讀取到的資料，以便傳給其他controller
@@ -144,8 +140,10 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //    讀取MainCollectionVC傳入的assets及index
     var assetList: [PHAsset] = []
     var assetIndex = 0
-//        以infoFlag判斷infoLabel是否顯示
+//    以flag判斷infoLabel是否顯示
     var infoFlag = false
+//    以flag判斷是否需reload
+    var reloadFlag = false
 //    宣告廣告橫幅
     lazy var adBannerView: GADBannerView = {
         let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
@@ -157,6 +155,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         return adBannerView
     }()
     
+    // MARK: - view function
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -178,11 +177,18 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(viewSwipe(gesture:)))
         swipeRight.direction = .right
         detailView.addGestureRecognizer(swipeRight)
+//        加入說明button
+        let helpButton = UIBarButtonItem(image: UIImage(named: "hexhelp"), style: .plain, target: self, action: #selector(helpAct))
+        navigationItem.rightBarButtonItem = helpButton
         
 //        設定GoogleMobileAds測試設備
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = (["a8ffedffeb5de5cf11194edd45471902429e1ecd", kGADSimulatorID] as! [String])
 //        向google請求廣告內容
         adBannerView.load(GADRequest())
+    }
+    @objc func helpAct(){
+//        pop說明View
+        
     }
     @objc func viewSwipe(gesture: UISwipeGestureRecognizer){
 //        滑動後恢復infoLabel的狀態
@@ -262,13 +268,31 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        清空textView
-        if self.textView != nil {
-            self.textView!.removeFromSuperview()
-            self.textView = nil
-        }
-        if imageView.image != nil {
-            setRemark()
+        if reloadFlag {
+//            flag為true代表FullScreen mode有切換圖片
+//            重新從asset讀取圖片
+            let requestImage = AssetWorks()
+            requestImage.assetToUIImage(assetList[assetIndex], targetSize: CGSize(width: assetList[assetIndex].pixelWidth, height: assetList[assetIndex].pixelHeight), contentMode: .aspectFit, handler: {(image) in
+                self.imageView.image = image
+                if self.textView != nil {
+                    self.textView!.removeFromSuperview()
+                    self.textView = nil
+                }
+                self.setRemark()
+                self.tableView.reloadData()
+            })
+//            flag切回false
+            reloadFlag = false
+        }else{
+//            flag為false代表沒切換圖片，僅需重讀textView
+//            清空textView
+            if self.textView != nil {
+                self.textView!.removeFromSuperview()
+                self.textView = nil
+            }
+            if imageView.image != nil {
+                setRemark()
+            }
         }
     }
     
@@ -276,7 +300,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //        設定各欄位的高度
         switch indexPath.row{
         case 0:
-            return UIScreen.main.bounds.height * 0.70
+            return UIScreen.main.bounds.height * 0.65
         case 1:
             return UIScreen.main.bounds.height * 0.15
         default:
@@ -361,12 +385,12 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     
 
 }
-
+    // MARK: - Delegate
 extension DetailTableViewController: GADBannerViewDelegate {
 //    橫幅廣告的delegate
     func adViewDidReceiveAd(_ bannerView: GADBannerView) {
 //        成功讀取廣告時呼叫此func，加入view
-        adBannerView.frame.origin = CGPoint(x: 0, y: UIScreen.main.bounds.height - adBannerView.frame.size.height - (navigationController?.navigationBar.frame.maxY ?? 0))
+        adBannerView.frame.origin = CGPoint(x: UIScreen.main.bounds.width - adBannerView.frame.size.width, y: UIScreen.main.bounds.height - adBannerView.frame.size.height - (navigationController?.navigationBar.frame.maxY ?? 0))
         self.view.addSubview(adBannerView)
     }
     

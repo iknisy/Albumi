@@ -14,25 +14,13 @@ import GoogleMobileAds
 
 class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryChangeObserver, UIPopoverPresentationControllerDelegate {
 
-    @IBOutlet weak var sequenceButton: UIButton!
-    @IBAction func sequenceAction(){
-        switch sequenceButton.titleLabel?.text {
-        case "Clear":
-//            排序Button若為Clear，清除所有分析結果，畫面恢復為顯示photo library
-            self.assetList = []
-            self.isAsset = nil
-            sequenceButton.setTitle(" ", for: .normal)
-            self.loadPhotos()
-            self.collectionView.reloadData()
-        default:
-            break
-        }
-    }
     @IBOutlet weak var deletePhotoButton: UIButton!
     @IBAction func deletePhotoAction(){
+//        若正在分析相似圖片則不作用
+        if nvActiveView.isAnimating {return}
         if deleteFlag {
 //            若是delete mode就切換成normal mode
-            deletePhotoButton.tintColor = UIColor.black
+            deletePhotoButton.tintColor = self.view.tintColor
             deleteFlag = false
 //            使用popover提示使用者
             if let controller = storyboard?.instantiateViewController(withIdentifier: "PopoverViewController") as? PopoverViewController {
@@ -41,7 +29,12 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
                 controller.popoverPresentationController?.sourceView = deletePhotoButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
                 controller.labelString = "  Normal Mode"
-                controller.labelColor = UIColor.black
+//                設定為可對應DarkMode
+                if #available(iOS 13, *){
+                    controller.labelColor = UIColor.label
+                }else{
+                    controller.labelColor = UIColor.black
+                }
                 present(controller, animated: true, completion: nil)
             }
         }else{
@@ -60,9 +53,22 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             }
         }
     }
-    
+//    設定此View不對應旋轉螢幕
+    override var shouldAutorotate: Bool {
+        get{
+            return false
+        }
+    }
+//    設定此View僅對應螢幕直相
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        get{
+            return .portrait
+        }
+    }
 //    用來儲存所有圖片
     var assetList: [PHAsset] = []
+//    儲存圖片縮圖
+    var assetThumbnail:[UIImage] = []
 //    儲存從設備fetch圖片的結果
     var assetFetchResult: PHFetchResult<PHAsset> = PHFetchResult.init()
 //    儲存設備上的圖片增減狀態
@@ -124,12 +130,41 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 //        註冊設備相簿的改變通知
         PHPhotoLibrary.shared().register(self)
         loadPhotos()
+//        加入說明button
+        let helpButton = UIBarButtonItem(image: UIImage(named: "hexhelp"), style: .plain, target: self, action: #selector(helpAct))
+        navigationItem.rightBarButtonItem = helpButton
         
 //        設定GoogleMobileAds測試設備
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["a8ffedffeb5de5cf11194edd45471902429e1ecd"]
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["a8ffedffeb5de5cf11194edd45471902429e1ecd", "77326fb9e37ca20ddb6fd34175ee42416a7a1933"]
 //        向google請求廣告內容
         adBannerView.load(GADRequest())
         analyzingRewarded = createAndLoadRewardedAD()
+    }
+    @objc func helpAct(){
+//        若正在分析相似圖片則不作用
+        if nvActiveView.isAnimating {return}
+//        pop說明View
+        
+    }
+    @objc func sequenceAct(){
+//        switch sequenceButton.titleLabel?.text {
+//        case "Clear":
+////            排序Button若為Clear，清除所有分析結果，畫面恢復為顯示photo library
+//            self.assetList = []
+//            self.isAsset = nil
+//            sequenceButton.setTitle(" ", for: .normal)
+//            self.loadPhotos()
+//            self.collectionView.reloadData()
+//        default:
+//            break
+//        }
+//        清除所有分析結果，畫面恢復為顯示photo library
+        self.assetList.removeAll()
+        self.assetThumbnail.removeAll()
+        self.isAsset = nil
+        _ = navigationItem.rightBarButtonItems?.popLast()
+        self.loadPhotos()
+//        self.collectionView.reloadData()
     }
     func loadPhotos(){
 //        將動畫加入view
@@ -137,8 +172,9 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         if let isAsset = isAsset {
 //            若有指定asset，並且asset庫沒有物件則進行相似圖片分析工作
             if assetList.count != 0 {return}
-//            防止廣告播完又run這段
+//            為了防止廣告播完又run這段code，所以在assetList加target圖片
             assetList.append(isAsset)
+            reloadThumbnail()
 //            alert提示使用者看廣告
             let noteAlertController = UIAlertController(title: "Please", message: "Look full ad when analyzing.", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
@@ -157,6 +193,7 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             for i in 0..<assetFetchResult.count {
                 assetList.append(assetFetchResult.object(at: i))
             }
+            reloadThumbnail()
 //            停止動畫並移除
             self.nvActiveView.stopAnimating()
             self.nvActiveView.removeFromSuperview()
@@ -174,12 +211,15 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         let SI = SimilarImages()
         SI.findSimilarImages(asset: isAsset){assets in
             self.assetList = assets
+            self.reloadThumbnail()
 //            向NotificationCenter回傳進度100％
             NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
 //            重讀畫面
             self.collectionView.reloadData()
-//            設定排序Button
-            self.sequenceButton.setTitle("Clear", for: .normal)
+//            設定清除分析結果的Button
+            let clearButton = UIBarButtonItem(image: UIImage(named: "filterClear"), style: .plain, target: self, action: #selector(self.sequenceAct))
+            self.navigationItem.rightBarButtonItems?.append(clearButton)
+            
 //            停止動畫並移除
             self.nvActiveView.stopAnimating()
             self.nvActiveView.removeFromSuperview()
@@ -195,7 +235,7 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 //            進度為0％時，設定進度說明的label並加入
             processLabel.textAlignment = .center
             processLabel.font = UIFont.systemFont(ofSize: 15)
-            processLabel.textColor = sequenceButton.titleLabel?.textColor
+            processLabel.textColor = self.view.tintColor
             processLabel.text = "Analyzing Photos... \(persent)%"
             self.view.addSubview(processLabel)
         case 100:
@@ -237,6 +277,7 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             for i in 0..<self.assetFetchResult.count {
                 self.assetList.append(self.assetFetchResult.object(at: i))
             }
+            reloadThumbnail()
 //            若增減的變動不大，會使用動畫更新view
             if changes.hasIncrementalChanges {
 //                分開儲存圖片增減改變的index
@@ -282,6 +323,55 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
+    
+    func checkAuthorization(){
+//        檢查app是否有讀寫相簿權限
+        let status =  PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+//            已有權限，reload畫面
+            collectionView.reloadData()
+        case .notDetermined:
+//            未設定權限，過10秒呼叫自己再次確認
+            checkAuthorization()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10, execute: {
+                self.checkAuthorization()
+            })
+        default:
+//            沒有權限，跳出Alert請使用者開權限
+            let authAlertController = UIAlertController(title: "Denied", message: "Please check authorization:\n\nPhotos -> Read and Write", preferredStyle: .alert)
+            let settingAct = UIAlertAction(title: "Settings", style: .default, handler: {_ in
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {return}
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+//                    開啟設備Seetings並跳至此app的權限設定
+                    UIApplication.shared.open(settingsUrl, options: [:], completionHandler: {[weak self] _ in
+                        self?.checkAuthorization()
+                    })
+                }
+            })
+            authAlertController.addAction(settingAct)
+            present(authAlertController, animated: true, completion: nil)
+        }
+    }
+    
+    func reloadThumbnail(_ index: Int = 0){
+//        重新讀取縮圖
+        if index == 0{
+//            index若為0則清除現有縮圖
+            assetThumbnail.removeAll()
+        }
+        let assetWork = AssetWorks()
+        assetWork.assetToUIImage(assetList[index], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){ image in
+            self.assetThumbnail.append(image)
+            if self.assetThumbnail.count == self.assetList.count {
+//                若assetList與assetThumbnail內容的數量相同代表已讀取完畢
+                self.collectionView.reloadData()
+            }else{
+//                未讀取完，下一個index
+                self.reloadThumbnail(index+1)
+            }
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -303,6 +393,10 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // return the number of items
+        if assetList.count != assetThumbnail.count {
+//            若assetList與assetThumbnail內容的數量不同代表未讀取完
+            return 0
+        }
         return assetList.count
     }
 
@@ -310,27 +404,44 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCollectionViewCell
         // Configure the cell
 //        從allAssets中讀取圖片，在cell裡顯示
-        let assetWork = AssetWorks()
-        assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
-            cell.gridImageView.image = image
+//        let assetWork = AssetWorks()
+//        assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
+//            cell.gridImageView.image = image
+//        }
+        if assetThumbnail.count == assetList.count {
+            cell.gridImageView.image = assetThumbnail[indexPath.row]
         }
         return cell
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+//        檢查相簿讀寫權限
+        if (PHPhotoLibrary.authorizationStatus() != .authorized) {
+            checkAuthorization()
+        }
+//        讀取圖片
         loadPhotos()
+//        處理相簿內容的增減
         assetChanged()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+//        檢查螢幕方向
+        checkOrientation()
 //        增加collectionView最下面的空間讓廣告不會擋住cell
         collectionView.contentInset.bottom = 100
+    }
+    
+    func checkOrientation(_ forceRotate: Bool = false){
+        let orientation = UIDevice.current.orientation
+        if orientation == .landscapeLeft || orientation == .landscapeRight || forceRotate{
+//            若螢幕方向為橫，則強制轉回直向
+            UIDevice.current.setValue(UIDeviceOrientation.portrait.rawValue, forKey: "orientation")
+        }
     }
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        若正在分析相似圖片則不作用
+        if nvActiveView.isAnimating {return}
         if deleteFlag {
 //            若是delete mode，則刪除圖片
 //            刪除圖片的alert，message的地方增加空行放圖片

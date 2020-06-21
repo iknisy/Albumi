@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j67-iJ-eMj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="j67-iJ-eMj">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,7 +20,6 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                            <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <sections/>
@@ -82,32 +81,19 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="gSu-gN-YJC">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="vfX-BG-6WG">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eKZ-C3-c6r">
-                                <rect key="frame" x="20" y="0.0" width="46" height="44"/>
+                        <barButtonItem key="leftBarButtonItem" width="50" style="plain" id="vfX-BG-6WG">
+                            <button key="customView" autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eKZ-C3-c6r">
+                                <rect key="frame" x="20" y="0.0" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <state key="normal" image="delete"/>
+                                <state key="normal" title="" image="trash32"/>
                                 <connections>
                                     <action selector="deletePhotoAction" destination="x4l-kL-xmW" eventType="touchDown" id="1J3-hA-5Ho"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="IrN-1k-AqI">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yir-Wd-Wle">
-                                <rect key="frame" x="302" y="7" width="92" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title=" "/>
-                                <connections>
-                                    <action selector="sequenceAction" destination="x4l-kL-xmW" eventType="touchDown" id="vPL-3B-RHJ"/>
                                 </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="deletePhotoButton" destination="eKZ-C3-c6r" id="P7z-rA-JUX"/>
-                        <outlet property="sequenceButton" destination="yir-Wd-Wle" id="oI6-du-qYE"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f85-Uh-hnH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -152,39 +138,39 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="9mS-yr-JHs">
-                                                    <rect key="frame" x="30" y="21" width="354" height="1.5"/>
+                                                    <rect key="frame" x="30" y="0.0" width="354" height="43.5"/>
                                                     <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-vH-f6R">
-                                                            <rect key="frame" x="0.0" y="0.0" width="53" height="1.5"/>
-                                                            <state key="normal" title="Info"/>
+                                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hqa-vH-f6R">
+                                                            <rect key="frame" x="0.0" y="0.0" width="53" height="43.5"/>
+                                                            <state key="normal" image="information"/>
                                                             <connections>
                                                                 <action selector="info" destination="Fd2-Mq-IFJ" eventType="touchDown" id="qrc-Ch-z3Q"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cud-ZG-pxP">
-                                                            <rect key="frame" x="75" y="0.0" width="53.5" height="1.5"/>
-                                                            <state key="normal" title="Full"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cud-ZG-pxP">
+                                                            <rect key="frame" x="75" y="0.0" width="53.5" height="43.5"/>
+                                                            <state key="normal" image="fullscreen-2"/>
                                                             <connections>
                                                                 <action selector="fullScreenView" destination="Fd2-Mq-IFJ" eventType="touchDown" id="oZS-Mj-UgT"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4X-4y-Eh9">
-                                                            <rect key="frame" x="150.5" y="0.0" width="53" height="1.5"/>
-                                                            <state key="normal" title="Edit"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4X-4y-Eh9">
+                                                            <rect key="frame" x="150.5" y="0.0" width="53" height="43.5"/>
+                                                            <state key="normal" image="pen"/>
                                                             <connections>
                                                                 <action selector="editText" destination="Fd2-Mq-IFJ" eventType="touchDown" id="LPG-ho-k82"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdf-9A-oel">
-                                                            <rect key="frame" x="225.5" y="0.0" width="53.5" height="1.5"/>
-                                                            <state key="normal" title="SI"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mdf-9A-oel">
+                                                            <rect key="frame" x="225.5" y="0.0" width="53.5" height="43.5"/>
+                                                            <state key="normal" image="analyzing"/>
                                                             <connections>
                                                                 <action selector="similaryImage" destination="Fd2-Mq-IFJ" eventType="touchDown" id="Lov-mK-0i6"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JtB-qR-U6k">
-                                                            <rect key="frame" x="301" y="0.0" width="53" height="1.5"/>
-                                                            <state key="normal" title="save"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JtB-qR-U6k">
+                                                            <rect key="frame" x="301" y="0.0" width="53" height="43.5"/>
+                                                            <state key="normal" image="direct-download"/>
                                                             <connections>
                                                                 <action selector="saveImage" destination="Fd2-Mq-IFJ" eventType="touchDown" id="Kas-37-iXS"/>
                                                             </connections>
@@ -192,17 +178,17 @@
                                                     </subviews>
                                                 </stackView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INFO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTI-uI-K30">
-                                                    <rect key="frame" x="368.5" y="19.5" width="37" height="20"/>
+                                                    <rect key="frame" x="385" y="0.0" width="29" height="15"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                     <color key="textColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="9mS-yr-JHs" firstAttribute="top" secondItem="7Il-wc-Csk" secondAttribute="topMargin" constant="10" id="3ef-Fh-Wb0"/>
+                                                <constraint firstItem="9mS-yr-JHs" firstAttribute="top" secondItem="7Il-wc-Csk" secondAttribute="top" id="3ef-Fh-Wb0"/>
                                                 <constraint firstItem="9mS-yr-JHs" firstAttribute="trailing" secondItem="7Il-wc-Csk" secondAttribute="trailingMargin" constant="-10" id="P3N-cv-iR9"/>
-                                                <constraint firstItem="9mS-yr-JHs" firstAttribute="bottom" secondItem="7Il-wc-Csk" secondAttribute="bottomMargin" constant="-10" id="f9b-4v-fbl"/>
+                                                <constraint firstItem="9mS-yr-JHs" firstAttribute="bottom" secondItem="7Il-wc-Csk" secondAttribute="bottom" id="f9b-4v-fbl"/>
                                                 <constraint firstItem="9mS-yr-JHs" firstAttribute="leading" secondItem="7Il-wc-Csk" secondAttribute="leadingMargin" constant="10" id="lNd-tX-283"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -240,7 +226,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vgX-ya-ydu">
-                                <rect key="frame" x="0.0" y="44" width="414" height="757"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="749"/>
                             </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="MnC-NX-LeV">
                                 <rect key="frame" x="67" y="208" width="289" height="414"/>
@@ -250,51 +236,52 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mxU-CZ-bpn">
-                                <rect key="frame" x="0.0" y="801" width="414" height="61"/>
+                                <rect key="frame" x="0.0" y="793" width="416" height="69"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60W-vr-J5i">
-                                        <rect key="frame" x="0.0" y="4" width="103.5" height="53"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <state key="normal" title="Color"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="60W-vr-J5i">
+                                        <rect key="frame" x="0.0" y="2.5" width="104" height="64"/>
+                                        <state key="normal" image="color-palette"/>
                                         <connections>
                                             <action selector="colorPicker" destination="v7F-QP-2Lf" eventType="touchDown" id="d0v-ht-ZwB"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="Afc-L0-B5H">
-                                        <rect key="frame" x="103.5" y="0.0" width="103.5" height="61"/>
+                                        <rect key="frame" x="104" y="0.0" width="104" height="69"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FontSize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wkl-cZ-f93">
-                                                <rect key="frame" x="14" y="0.0" width="75.5" height="24"/>
-                                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="font" translatesAutoresizingMaskIntoConstraints="NO" id="D92-yW-TjS">
+                                                <rect key="frame" x="36" y="0.0" width="32" height="32"/>
+                                                <accessibility key="accessibilityConfiguration">
+                                                    <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
+                                                </accessibility>
+                                            </imageView>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="20" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hpa-vS-2yP">
-                                                <rect key="frame" x="29.5" y="27" width="45" height="34"/>
+                                                <rect key="frame" x="29.5" y="35" width="45" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXO-mf-ViZ">
-                                        <rect key="frame" x="207" y="4" width="103.5" height="53"/>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <state key="normal" title="Clear"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXO-mf-ViZ">
+                                        <rect key="frame" x="208" y="2.5" width="104" height="64"/>
+                                        <state key="normal" image="clear"/>
                                         <connections>
                                             <action selector="clearText" destination="v7F-QP-2Lf" eventType="touchDown" id="dDN-bw-74y"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="tLw-TD-XNF">
-                                        <rect key="frame" x="310.5" y="5" width="103.5" height="51.5"/>
+                                        <rect key="frame" x="312" y="3" width="104" height="63"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lock or Move" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tdz-lx-tzK">
-                                                <rect key="frame" x="0.5" y="0.0" width="103" height="20.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="5P5-dI-lFu">
+                                                <rect key="frame" x="36" y="0.0" width="32" height="32"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <state key="normal" image="push-pin32"/>
+                                                <connections>
+                                                    <action selector="lockButton" destination="v7F-QP-2Lf" eventType="touchDown" id="7cr-g8-bgC"/>
+                                                </connections>
+                                            </button>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="EBY-pl-iAo">
-                                                <rect key="frame" x="27.5" y="20.5" width="51" height="31"/>
+                                                <rect key="frame" x="27.5" y="32" width="51" height="31"/>
                                                 <color key="onTintColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
                                                     <action selector="lock:" destination="v7F-QP-2Lf" eventType="valueChanged" id="FnO-bV-lcw"/>
@@ -321,6 +308,7 @@
                     <connections>
                         <outlet property="fontSize" destination="hpa-vS-2yP" id="fLC-94-sSf"/>
                         <outlet property="imageView" destination="vgX-ya-ydu" id="0tV-hg-Yyn"/>
+                        <outlet property="lockSwitch" destination="EBY-pl-iAo" id="lFs-Qu-N4N"/>
                         <outlet property="textView" destination="MnC-NX-LeV" id="BpX-F2-nhx"/>
                     </connections>
                 </viewController>
@@ -339,16 +327,6 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="w6h-D2-cWa">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="svL-cb-Jkt">
-                                <rect key="frame" x="0.0" y="44" width="35" height="53"/>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                <state key="normal" title="＜">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                </state>
-                                <connections>
-                                    <action selector="close" destination="w5P-pB-MKv" eventType="touchDown" id="zHF-Ec-Zdw"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L7t-l3-2cc">
                                 <rect key="frame" x="87" y="389" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -360,8 +338,6 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="w6h-D2-cWa" firstAttribute="bottom" secondItem="NIX-vC-LMe" secondAttribute="bottom" id="1SE-nd-Snp"/>
-                            <constraint firstItem="svL-cb-Jkt" firstAttribute="leading" secondItem="NIX-vC-LMe" secondAttribute="leading" id="3Bs-iF-phz"/>
-                            <constraint firstItem="svL-cb-Jkt" firstAttribute="top" secondItem="NIX-vC-LMe" secondAttribute="top" id="4OJ-59-Ssx"/>
                             <constraint firstItem="w6h-D2-cWa" firstAttribute="trailing" secondItem="NIX-vC-LMe" secondAttribute="trailing" id="Qs7-Rw-Jvt"/>
                             <constraint firstItem="w6h-D2-cWa" firstAttribute="leading" secondItem="NIX-vC-LMe" secondAttribute="leading" id="TgJ-Zp-tVo"/>
                             <constraint firstItem="w6h-D2-cWa" firstAttribute="top" secondItem="NIX-vC-LMe" secondAttribute="top" id="zF9-9a-gwc"/>
@@ -370,7 +346,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="S3W-GX-lRJ"/>
                     <connections>
-                        <outlet property="closeButton" destination="svL-cb-Jkt" id="dog-fn-6Rf"/>
                         <outlet property="imageView" destination="w6h-D2-cWa" id="KbD-GZ-D6Z"/>
                         <outlet property="textView" destination="L7t-l3-2cc" id="CHN-D6-flW"/>
                     </connections>
@@ -379,10 +354,10 @@
             </objects>
             <point key="canvasLocation" x="2345" y="142"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Main Navi View Controller-->
         <scene sceneID="7t9-lJ-oAe">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" customClass="MainNaviViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="alW-Ll-vz1">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -399,6 +374,15 @@
         </scene>
     </scenes>
     <resources>
-        <image name="delete" width="23" height="25"/>
+        <image name="analyzing" width="64" height="64"/>
+        <image name="clear" width="64" height="64"/>
+        <image name="color-palette" width="64" height="64"/>
+        <image name="direct-download" width="64" height="64"/>
+        <image name="font" width="32" height="32"/>
+        <image name="fullscreen-2" width="64" height="64"/>
+        <image name="information" width="64" height="64"/>
+        <image name="pen" width="64" height="64"/>
+        <image name="push-pin32" width="32" height="32"/>
+        <image name="trash32" width="32" height="32"/>
     </resources>
 </document>

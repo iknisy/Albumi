@@ -26,6 +26,7 @@
 		54AA35C72403D3BA00B67593 /* ImageSimilarity.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */; };
 		54AA35CB2405430600B67593 /* SimilarImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CA2405430600B67593 /* SimilarImages.swift */; };
 		54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CC2407B5E500B67593 /* AssetWorks.swift */; };
+		54D91C44248F625700A7795E /* MainNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D91C43248F625700A7795E /* MainNaviViewController.swift */; };
 		CCC8A083BAB1E2A2408DCC7D /* Pods_AlbumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,6 +66,7 @@
 		54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = ImageSimilarity.mlmodel; sourceTree = "<group>"; };
 		54AA35CA2405430600B67593 /* SimilarImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarImages.swift; sourceTree = "<group>"; };
 		54AA35CC2407B5E500B67593 /* AssetWorks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWorks.swift; sourceTree = "<group>"; };
+		54D91C43248F625700A7795E /* MainNaviViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNaviViewController.swift; sourceTree = "<group>"; };
 		77A5626E493BF740589BC834 /* Pods-Albumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.debug.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.debug.xcconfig"; sourceTree = "<group>"; };
 		87282266F10529680B1DDEAB /* Pods-Albumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.release.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.release.xcconfig"; sourceTree = "<group>"; };
 		B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Albumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 				541AC33D23EC2AF60087614E /* FullScreenViewController.swift */,
 				545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */,
 				541ABA3F2462AD1C001C31EA /* PopoverViewController.swift */,
+				54D91C43248F625700A7795E /* MainNaviViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				54AA35C72403D3BA00B67593 /* ImageSimilarity.mlmodel in Sources */,
 				541AC33C23EAF12D0087614E /* DetailTableViewController.swift in Sources */,
 				547184D223C1D3C200714916 /* AppDelegate.swift in Sources */,
+				54D91C44248F625700A7795E /* MainNaviViewController.swift in Sources */,
 				547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */,
 				541ABA402462AD1C001C31EA /* PopoverViewController.swift in Sources */,
 				541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */,

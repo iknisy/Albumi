@@ -27,8 +27,10 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
     }
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 //        開始修改文字大小，UItextField的delegate會call這個func
-//        暫時關閉navigationbar的功能
-        navigationItem.rightBarButtonItem?.isEnabled = false
+//        暫時關閉navigationbar上現有的所有功能
+        for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
+            navigationItem.rightBarButtonItems?[i].isEnabled = false
+        }
         navigationItem.hidesBackButton = true
 //        加入修改完成按鈕
         navigationItem.rightBarButtonItems?.append(textbar)
@@ -61,12 +63,23 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
         textView.font = textView.font?.withSize(20)
         fontSize.text = "20"
     }
+    @IBOutlet var lockSwitch: UISwitch!
     @IBAction func lock(_ sender: UISwitch){
 //        鎖定文字位置
         if sender.isOn {
             lockFlag = true
         }else{
             lockFlag = false
+        }
+    }
+    @IBAction func lockButton(){
+//        手動調整lockswitch
+        if lockSwitch.isOn {
+            lockFlag = false
+            lockSwitch.setOn(false, animated: true)
+        }else{
+            lockFlag = true
+            lockSwitch.setOn(true, animated: true)
         }
     }
     @IBAction func colorPicker(){
@@ -112,15 +125,19 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             textView.isUserInteractionEnabled = false
 //            移除此按鈕
             _ = navigationItem.rightBarButtonItems?.popLast()
-//            恢復navigationbar原功能
-            navigationItem.rightBarButtonItem?.isEnabled = true
+//            恢復navigationbar原有功能
+            for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
+                navigationItem.rightBarButtonItems?[i].isEnabled = true
+            }
             navigationItem.hidesBackButton = false
             
         }else{
 //            移除此按鈕
             _ = navigationItem.rightBarButtonItems?.popLast()
-//            恢復navigationbar原功能
-            navigationItem.rightBarButtonItem?.isEnabled = true
+//            恢復navigationbar原有功能
+            for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
+                navigationItem.rightBarButtonItems?[i].isEnabled = true
+            }
             navigationItem.hidesBackButton = false
 //            呼叫結束修改的func
             _ = textFieldShouldReturn(fontSize)
@@ -143,9 +160,16 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
         textView.isUserInteractionEnabled = false
 //        儲存view的中心點位置
         originalCenter = view.center
+//        加入說明button
+        let helpButton = UIBarButtonItem(image: UIImage(named: "hexhelp"), style: .plain, target: self, action: #selector(helpAct))
+        navigationItem.rightBarButtonItem = helpButton
 //        建立儲存按鈕
-        let saveBar = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(saveText))
-        navigationItem.rightBarButtonItem = saveBar
+        let saveBar = UIBarButtonItem(image: UIImage(named: "save-2"), style: .plain, target: self, action: #selector(saveText))
+        navigationItem.rightBarButtonItems?.append(saveBar)
+    }
+    @objc func helpAct(){
+//        pop說明View
+        
     }
     @objc func saveText(){
         if textView.text == "" {
@@ -290,8 +314,10 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             textView.isEditable = true
             textView.becomeFirstResponder()
             textView.isUserInteractionEnabled = true
-//            暫時關閉navigationbar的功能
-            navigationItem.rightBarButtonItem?.isEnabled = false
+//            暫時關閉navigationbar上現有的所有功能
+            for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
+                navigationItem.rightBarButtonItems?[i].isEnabled = false
+            }
             navigationItem.hidesBackButton = true
 //            加入完成修改按鈕
             navigationItem.rightBarButtonItems?.append(textbar)
