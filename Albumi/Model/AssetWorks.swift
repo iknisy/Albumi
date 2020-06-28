@@ -42,28 +42,28 @@ class AssetWorks {
         var infoString = ""
 //        print(asset)
         if asset.representsBurst {
-            infoString += "This photos is in burst mode.\n"
+            infoString += NSLocalizedString("This photos is in burst mode.\n", comment: "")
         }
 //        print(asset.burstSelectionTypes)
 //        print(asset.burstIdentifier)
         if let createData = asset.creationDate {
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "YYYY / MM / dd, HH:mm:ss"
-            infoString += "Create Date: \(dateFormat.string(from: createData))\n"
+            infoString += NSLocalizedString("Create Date", comment: "") + ": \(dateFormat.string(from: createData))\n"
         }
         if let modifyDate = asset.modificationDate {
             let dateFormat = DateFormatter()
             dateFormat.dateFormat = "YYYY / MM / dd, HH:mm:ss"
-            infoString += "Modify Date: \(dateFormat.string(from: modifyDate))\n"
+            infoString += NSLocalizedString("Modify Date", comment: "") + ": \(dateFormat.string(from: modifyDate))\n"
         }
-        infoString += "PhotoSize: \(asset.pixelHeight) Ｘ \(asset.pixelWidth) \n"
+        infoString += NSLocalizedString("PhotoSize", comment: "") + ": \(asset.pixelHeight) Ｘ \(asset.pixelWidth) \n"
         switch asset.sourceType {
         case .typeUserLibrary:
-            infoString += "From: Local\n"
+            infoString += NSLocalizedString("From: Local\n", comment: "")
         case .typeCloudShared:
-            infoString += "From: iCloud\n"
+            infoString += NSLocalizedString("From: iCloud\n", comment: "")
         case .typeiTunesSynced:
-            infoString += "From: iTunes\n"
+            infoString += NSLocalizedString("From: iTunes\n", comment: "")
         default:
             break
         }
@@ -82,9 +82,9 @@ class AssetWorks {
                     print(error)
                 }
                 if let placemarks = placemarks {
-                    let city = placemarks[0].locality ?? "Unknown City"
-                    let country = placemarks[0].country ?? "Unknown Country"
-                    let localString = "Location: \(city), \(country)"
+                    let city = placemarks[0].locality ?? NSLocalizedString("Unknown City", comment: "")
+                    let country = placemarks[0].country ?? NSLocalizedString("Unknown Country", comment: "")
+                    let localString = NSLocalizedString("Location", comment: "") + ": \(city), \(country)"
                     handler(localString)
                 }
             })

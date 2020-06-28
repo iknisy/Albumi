@@ -18,6 +18,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             textView.delegate = self
         }
     }
+    @IBOutlet var buttonStack: UIStackView!
     @IBOutlet var fontSize: UITextField!{
         didSet{
 //            設定鍵盤
@@ -107,6 +108,8 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
     var lockFlag = false
 //    為了確認要使用update還是insert
     var updateFlag = false
+//    顯示第二張說明圖片的flag
+    var helpActFlag = false
 //    儲存觸碰點
     var touchPoint = CGPoint.zero
 //    儲存view移動前的中心點
@@ -114,7 +117,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
 //    儲存鍵盤大小
     var keyboardSize = CGSize()
 //    完成文字編輯的按鈕及func
-    let textbar = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneEditText))
+    let textbar = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: .done, target: self, action: #selector(doneEditText))
     @objc func doneEditText(){
 //        確認是完成編輯的是textView還是textField
         if textView.isEditable{
@@ -168,8 +171,30 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
         navigationItem.rightBarButtonItems?.append(saveBar)
     }
     @objc func helpAct(){
-//        pop說明View
-        
+//        popover說明
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
+            controller.modalPresentationStyle = .popover
+            controller.popoverPresentationController?.delegate = self
+            controller.popoverPresentationController?.sourceView = buttonStack
+            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: buttonStack.frame.size)
+            let image = UIImage(named: NSLocalizedString("Edit1", comment: ""))
+            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
+            present(controller, animated: true, completion: {
+                self.helpActFlag = true
+            })
+        }
+    }
+    func helpAct2(){
+//        popover第二張說明圖
+        helpActFlag = false
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
+            controller.modalPresentationStyle = .popover
+            controller.popoverPresentationController?.delegate = self
+            controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
+            let image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
+            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
+            present(controller, animated: true, completion: nil)
+        }
     }
     @objc func saveText(){
         if textView.text == "" {
@@ -195,7 +220,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if let asset = asset, updateFlag == false {
+        if let asset = asset, updateFlag == false, textView.text == "" {
 //            在所有autolayout調整完後再設定textview
             setText(asset)
         }
@@ -335,3 +360,24 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
     */
 
 }
+extension EditTextViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+//        設定popover
+        return .none
+    }
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+//        popover的View消失後執行此func(after iOS13
+        if helpActFlag {
+//            以flag確認是否顯示第二張說明
+            helpAct2()
+        }
+    }
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+//        popover的View消失後執行此func(before iOS13
+        if helpActFlag {
+//            以flag確認是否顯示第二張說明
+            helpAct2()
+        }
+    }
+}
+

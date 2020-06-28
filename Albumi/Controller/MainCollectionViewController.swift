@@ -28,8 +28,8 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
                 controller.popoverPresentationController?.delegate = self
                 controller.popoverPresentationController?.sourceView = deletePhotoButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
-                controller.labelString = "  Normal Mode"
-//                設定為可對應DarkMode
+                controller.labelString = "  " + NSLocalizedString("Normal Mode", comment: "")
+//                設定為可對應iOS13的DarkMode
                 if #available(iOS 13, *){
                     controller.labelColor = UIColor.label
                 }else{
@@ -47,7 +47,7 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
                 controller.popoverPresentationController?.delegate = self
                 controller.popoverPresentationController?.sourceView = deletePhotoButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
-                controller.labelString = "  Delete Mode"
+                controller.labelString = "  " + NSLocalizedString("Delete Mode", comment: "")
                 controller.labelColor = UIColor.red
                 present(controller, animated: true, completion: nil)
             }
@@ -143,8 +143,16 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
     @objc func helpAct(){
 //        若正在分析相似圖片則不作用
         if nvActiveView.isAnimating {return}
-//        pop說明View
-        
+//        popover說明
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
+            controller.modalPresentationStyle = .popover
+            controller.popoverPresentationController?.delegate = self
+            controller.popoverPresentationController?.sourceView = deletePhotoButton
+            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
+            let image = UIImage(named: NSLocalizedString("Main", comment: ""))
+            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
+            present(controller, animated: true, completion: nil)
+        }
     }
     @objc func sequenceAct(){
 //        switch sequenceButton.titleLabel?.text {
@@ -174,10 +182,10 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             if assetList.count != 0 {return}
 //            為了防止廣告播完又run這段code，所以在assetList加target圖片
             assetList.append(isAsset)
-            reloadThumbnail()
+//            reloadThumbnail()
 //            alert提示使用者看廣告
-            let noteAlertController = UIAlertController(title: "Please", message: "Look full ad when analyzing.", preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: {_ in
+            let noteAlertController = UIAlertController(title: NSLocalizedString("Please", comment: "Title"), message: NSLocalizedString("Watch Ad when analyzing.", comment: ""), preferredStyle: .alert)
+            let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: {_ in
                 self.analyzingSI(isAsset)
             })
             noteAlertController.addAction(okAction)
@@ -236,14 +244,14 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             processLabel.textAlignment = .center
             processLabel.font = UIFont.systemFont(ofSize: 15)
             processLabel.textColor = self.view.tintColor
-            processLabel.text = "Analyzing Photos... \(persent)%"
+            processLabel.text = NSLocalizedString("Analyzing Photos", comment: "") + "... \(persent)%"
             self.view.addSubview(processLabel)
         case 100:
 //            進度為100%時，移除進度說明的label
-            processLabel.text = "Analyzing Photos... \(persent)%"
+            processLabel.text = NSLocalizedString("Analyzing Photos", comment: "") + "... \(persent)%"
             processLabel.removeFromSuperview()
         default:
-            processLabel.text = "Analyzing Photos... \(persent)%"
+            processLabel.text = NSLocalizedString("Analyzing Photos", comment: "") + "... \(persent)%"
         }
     }
     
@@ -339,8 +347,8 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             })
         default:
 //            沒有權限，跳出Alert請使用者開權限
-            let authAlertController = UIAlertController(title: "Denied", message: "Please check authorization:\n\nPhotos -> Read and Write", preferredStyle: .alert)
-            let settingAct = UIAlertAction(title: "Settings", style: .default, handler: {_ in
+            let authAlertController = UIAlertController(title: NSLocalizedString("Denied", comment: ""), message: NSLocalizedString("Please check authorization:\n\nPhotos -> Read and Write", comment: ""), preferredStyle: .alert)
+            let settingAct = UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default, handler: {_ in
                 guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {return}
                 if UIApplication.shared.canOpenURL(settingsUrl) {
 //                    開啟設備Seetings並跳至此app的權限設定
@@ -403,14 +411,16 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCollectionViewCell
         // Configure the cell
-//        從allAssets中讀取圖片，在cell裡顯示
-//        let assetWork = AssetWorks()
-//        assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
-//            cell.gridImageView.image = image
-//        }
         if assetThumbnail.count == assetList.count {
             cell.gridImageView.image = assetThumbnail[indexPath.row]
         }
+//        else{
+////            從allAssets中讀取圖片，在cell裡顯示
+//            let assetWork = AssetWorks()
+//            assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
+//                cell.gridImageView.image = image
+//            }
+//        }
         return cell
     }
     
@@ -445,14 +455,14 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         if deleteFlag {
 //            若是delete mode，則刪除圖片
 //            刪除圖片的alert，message的地方增加空行放圖片
-            let delActController = UIAlertController(title: "Delete Confirm", message: "Do you want to delelte this Photo?\n\n\n\n\n\n\n\n\n\n", preferredStyle: .alert)
+            let delActController = UIAlertController(title: NSLocalizedString("Delete Confirm", comment: ""), message: NSLocalizedString("Do you want to delelte this Photo?\n\n\n\n\n\n\n\n\n\n", comment: ""), preferredStyle: .alert)
 //            將圖片預覽圖放入alert提示使用者
             let imageView = UIImageView(frame: CGRect(x: 60, y: 65, width: 150, height: 150))
             guard let cell = self.collectionView.cellForItem(at: indexPath) as? GridCollectionViewCell else {return}
             imageView.image = cell.gridImageView.image
             delActController.view.addSubview(imageView)
 //            使用者確認刪除圖片的動作
-            let okAct = UIAlertAction(title: "OK", style: .destructive, handler: {_ in
+            let okAct = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .destructive, handler: {_ in
 //                先從ＤＢ上刪除相關資料
                 _ = PictureRemarkIO.shared.deleteData(where: self.assetList[indexPath.row].localIdentifier)
 //                呼叫系統刪除圖片
@@ -465,7 +475,7 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
                 })
             })
             delActController.addAction(okAct)
-            let cancelAct = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAct = UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel, handler: nil)
             delActController.addAction(cancelAct)
             self.present(delActController, animated: true, completion: nil)
         }else if let destinationViewController = storyboard?.instantiateViewController(withIdentifier:  "DetailTableViewController") as? DetailTableViewController{

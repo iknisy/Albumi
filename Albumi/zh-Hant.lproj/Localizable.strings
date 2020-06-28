@@ -1,0 +1,69 @@
+/* 
+  Localizable.strings
+  Albumi
+
+  Created by 陳昱宏 on 2020/6/22.
+  Copyright © 2020 Mike. All rights reserved.
+*/
+
+/* MainCollectionViewController.swift */
+"Normal Mode" = "一般模式";
+
+"Delete Mode" = "刪除模式";
+
+"Please" = "跪求";
+
+"Watch Ad when analyzing." = "分析期間請看廣告";
+
+"OK" = "好";
+
+"Analyzing Photos" = "分析圖像中";
+
+"Denied" = "存取遭拒";
+
+"Please check authorization:\n\nPhotos -> Read and Write" = "請確認權限：\n\n照片 -> 讀取和寫入";
+
+"Settings" = "設定";
+
+"Delete Confirm" = "確認刪除";
+
+"Do you want to delelte this Photo?\n\n\n\n\n\n\n\n\n\n" = "要刪除這張照片嗎？\n\n\n\n\n\n\n\n\n\n";
+
+"Cancel" = "取消";
+
+"Main" = "Main_zh-Hant";
+
+/* DetailTableViewController.swift */
+"Image saved" = "圖片已儲存";
+
+"Detail" = "Detail_zh-Hant";
+
+/* EditTextViewController.swift */
+"Done" = "完成";
+
+"Edit1" = "Edit1_zh-Hant";
+
+"Edit2" = "Edit2_zh-Hant";
+
+/* AssetWorks.swift*/
+"Unknown City" = "未知城市";
+
+"Unknown Country" = "未知國家";
+
+"Location" = "地點";
+
+"This photos is in burst mode.\n" = "此照片為連拍照片\n";
+
+"Create Date" = "建立日期";
+
+"Modify Date" = "修改日期";
+
+"PhotoSize" = "圖片大小";
+
+"From: Local\n" = "存放位置: 本機\n";
+
+"From: iCloud\n" = "存放位置: iCloud\n";
+
+"From: iTunes\n" = "存放位置: iTunes\n";
+
+/*  */

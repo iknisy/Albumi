@@ -36,6 +36,33 @@
             </objects>
             <point key="canvasLocation" x="754" y="-503"/>
         </scene>
+        <!--Pop Image View Controller-->
+        <scene sceneID="FKU-WD-Igx">
+            <objects>
+                <viewController storyboardIdentifier="PopImageViewController" id="403-i6-wMm" customClass="PopImageViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4SA-gm-SRg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fD1-UB-9eB">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="fD1-UB-9eB" firstAttribute="top" secondItem="Z4E-Kx-HxT" secondAttribute="top" id="p03-hw-xVV"/>
+                            <constraint firstItem="fD1-UB-9eB" firstAttribute="leading" secondItem="Z4E-Kx-HxT" secondAttribute="leading" id="x0r-Ba-UTq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Z4E-Kx-HxT"/>
+                    </view>
+                    <connections>
+                        <outlet property="popImage" destination="fD1-UB-9eB" id="o4Q-pB-pJj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pkf-lQ-SoW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1563.768115942029" y="-511.60714285714283"/>
+        </scene>
         <!--Main Collection View Controller-->
         <scene sceneID="0Y2-3U-rmA">
             <objects>
@@ -81,6 +108,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="gSu-gN-YJC">
+                        <barButtonItem key="backBarButtonItem" title="Photos" id="j93-NC-csq"/>
                         <barButtonItem key="leftBarButtonItem" width="50" style="plain" id="vfX-BG-6WG">
                             <button key="customView" autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eKZ-C3-c6r">
                                 <rect key="frame" x="20" y="0.0" width="44" height="44"/>
@@ -306,6 +334,7 @@
                         <viewLayoutGuide key="safeArea" id="lpN-0D-rep"/>
                     </view>
                     <connections>
+                        <outlet property="buttonStack" destination="mxU-CZ-bpn" id="DVE-Hj-Jlm"/>
                         <outlet property="fontSize" destination="hpa-vS-2yP" id="fLC-94-sSf"/>
                         <outlet property="imageView" destination="vgX-ya-ydu" id="0tV-hg-Yyn"/>
                         <outlet property="lockSwitch" destination="EBY-pl-iAo" id="lFs-Qu-N4N"/>

@@ -125,7 +125,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
                 controller.popoverPresentationController?.delegate = self
                 controller.popoverPresentationController?.sourceView = saveButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: saveButton.frame.size)
-                controller.labelString = "  Image saved"
+                controller.labelString = "  " + NSLocalizedString("Image saved", comment: "")
                 controller.labelColor = self.view.tintColor
                 present(controller, animated: true, completion: nil)
             }
@@ -187,8 +187,16 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         adBannerView.load(GADRequest())
     }
     @objc func helpAct(){
-//        pop說明View
-        
+//        popover說明
+        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
+            controller.modalPresentationStyle = .popover
+            controller.popoverPresentationController?.delegate = self
+            controller.popoverPresentationController?.sourceView = editButton
+            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: editButton.frame.size)
+            let image = UIImage(named: NSLocalizedString("Detail", comment: ""))
+            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
+            present(controller, animated: true, completion: nil)
+        }
     }
     @objc func viewSwipe(gesture: UISwipeGestureRecognizer){
 //        滑動後恢復infoLabel的狀態
@@ -426,5 +434,19 @@ extension UIImageView {
         let y = (bounds.height - size.height) / 2.0 + frame.origin.y
 
         return CGRect(x: x, y: y, width: size.width, height: size.height)
+    }
+}
+
+extension UIImage {
+    func resizeByWidth(_ width: CGFloat) -> UIImage {
+//        以寬度為基準調整圖片大小
+//        若寬度大於圖片本身就不調整
+        if width > self.size.width {return self}
+        let size = CGSize(width: width, height: self.size.height * width / self.size.width)
+        let renderer = UIGraphicsImageRenderer(size: size)
+        let newImage = renderer.image(actions: {(context) in
+            self.draw(in: renderer.format.bounds)
+        })
+        return newImage
     }
 }

@@ -27,6 +27,8 @@
 		54AA35CB2405430600B67593 /* SimilarImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CA2405430600B67593 /* SimilarImages.swift */; };
 		54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CC2407B5E500B67593 /* AssetWorks.swift */; };
 		54D91C44248F625700A7795E /* MainNaviViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D91C43248F625700A7795E /* MainNaviViewController.swift */; };
+		54D91C5A24A0822B00A7795E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 54D91C5C24A0822B00A7795E /* Localizable.strings */; };
+		54D91C5E24A4FD7B00A7795E /* PopImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54D91C5D24A4FD7B00A7795E /* PopImageViewController.swift */; };
 		CCC8A083BAB1E2A2408DCC7D /* Pods_AlbumiTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A2FE66E6C8C3E0D65FFF19A /* Pods_AlbumiTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,10 @@
 		54AA35CA2405430600B67593 /* SimilarImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarImages.swift; sourceTree = "<group>"; };
 		54AA35CC2407B5E500B67593 /* AssetWorks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetWorks.swift; sourceTree = "<group>"; };
 		54D91C43248F625700A7795E /* MainNaviViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNaviViewController.swift; sourceTree = "<group>"; };
+		54D91C45249F6C9700A7795E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		54D91C46249F6C9900A7795E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		54D91C5B24A0822B00A7795E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		54D91C5D24A4FD7B00A7795E /* PopImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopImageViewController.swift; sourceTree = "<group>"; };
 		77A5626E493BF740589BC834 /* Pods-Albumi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.debug.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.debug.xcconfig"; sourceTree = "<group>"; };
 		87282266F10529680B1DDEAB /* Pods-Albumi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Albumi.release.xcconfig"; path = "Target Support Files/Pods-Albumi/Pods-Albumi.release.xcconfig"; sourceTree = "<group>"; };
 		B5FA069B1939F03BB9641775 /* Pods_Albumi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Albumi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +132,7 @@
 				54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */,
 				547184DA23C1D3C200714916 /* Assets.xcassets */,
 				547184DF23C1D3C200714916 /* Info.plist */,
+				54D91C5C24A0822B00A7795E /* Localizable.strings */,
 			);
 			path = Albumi;
 			sourceTree = "<group>";
@@ -176,6 +183,7 @@
 				545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */,
 				541ABA3F2462AD1C001C31EA /* PopoverViewController.swift */,
 				54D91C43248F625700A7795E /* MainNaviViewController.swift */,
+				54D91C5D24A4FD7B00A7795E /* PopImageViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -268,6 +276,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hant",
 			);
 			mainGroup = 547184C523C1D3C200714916;
 			productRefGroup = 547184CF23C1D3C200714916 /* Products */;
@@ -286,6 +295,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				547184DE23C1D3C200714916 /* LaunchScreen.storyboard in Resources */,
+				54D91C5A24A0822B00A7795E /* Localizable.strings in Resources */,
 				547184DB23C1D3C200714916 /* Assets.xcassets in Resources */,
 				547184D923C1D3C200714916 /* Main.storyboard in Resources */,
 			);
@@ -392,6 +402,7 @@
 				54D91C44248F625700A7795E /* MainNaviViewController.swift in Sources */,
 				547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */,
 				541ABA402462AD1C001C31EA /* PopoverViewController.swift in Sources */,
+				54D91C5E24A4FD7B00A7795E /* PopImageViewController.swift in Sources */,
 				541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */,
 				547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */,
 				54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */,
@@ -425,6 +436,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				547184D823C1D3C200714916 /* Base */,
+				54D91C45249F6C9700A7795E /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -433,8 +445,17 @@
 			isa = PBXVariantGroup;
 			children = (
 				547184DD23C1D3C200714916 /* Base */,
+				54D91C46249F6C9900A7795E /* zh-Hant */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		54D91C5C24A0822B00A7795E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				54D91C5B24A0822B00A7795E /* zh-Hant */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -444,6 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -504,6 +526,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
