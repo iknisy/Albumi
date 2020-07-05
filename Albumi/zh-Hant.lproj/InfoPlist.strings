@@ -1,0 +1,11 @@
+/* 
+  InfoPlist.strings
+  Albumi
+
+  Created by 陳昱宏 on 2020/7/2.
+  Copyright © 2020 Mike. All rights reserved.
+*/
+
+"CFBundleDisplayName" = "相輯式 — 相片輯錄式";
+
+"CFBundleName" = "相輯式";

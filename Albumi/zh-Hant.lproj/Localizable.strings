@@ -33,10 +33,14 @@
 
 "Main" = "Main_zh-Hant";
 
+"Main-filtered" = "Main-filtered_zh-Hant";
+
 /* DetailTableViewController.swift */
 "Image saved" = "圖片已儲存";
 
-"Detail" = "Detail_zh-Hant";
+"Detail1" = "Detail1_zh-Hant";
+
+"Detail2" = "Detail2_zh-Hant";
 
 /* EditTextViewController.swift */
 "Done" = "完成";
@@ -44,6 +48,8 @@
 "Edit1" = "Edit1_zh-Hant";
 
 "Edit2" = "Edit2_zh-Hant";
+
+"Edit3" = "Edit3_zh-Hant";
 
 /* AssetWorks.swift*/
 "Unknown City" = "未知城市";

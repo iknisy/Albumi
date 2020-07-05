@@ -10,7 +10,7 @@ import UIKit
 import FlexColorPicker
 import Photos
 
-class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, ColorPickerDelegate {
+class EditTextViewController: UIViewController{
 
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var textView: UITextView!{
@@ -25,33 +25,6 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             fontSize.keyboardType = .numberPad
             fontSize.delegate = self
         }
-    }
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-//        開始修改文字大小，UItextField的delegate會call這個func
-//        暫時關閉navigationbar上現有的所有功能
-        for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
-            navigationItem.rightBarButtonItems?[i].isEnabled = false
-        }
-        navigationItem.hidesBackButton = true
-//        加入修改完成按鈕
-        navigationItem.rightBarButtonItems?.append(textbar)
-        return true
-    }
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        結束修改文字大小，UItextField的delegate會call這個func
-//        結束編輯
-        textField.resignFirstResponder()
-//        檢查內容是否合理，然後修改文字大小，若不合理則將textField恢復成修改前狀態
-        guard let size = Double(textField.text!) else{
-            fontSize.text = textView.font?.pointSize.description
-            return true
-        }
-        if size > 0 {
-            textView.font = textView.font?.withSize(CGFloat(size))
-        }else{
-            fontSize.text = textView.font?.pointSize.description
-        }
-        return true
     }
     
     @IBAction func clearText(){
@@ -94,12 +67,6 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
             show(controller, sender: nil)
         }
     }
-    func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
-        textView.textColor = selectedColor
-    }
-    func colorPicker(_ colorPicker: ColorPickerController, confirmedColor: UIColor, usingControl: ColorControl) {
-        dismiss(animated: true, completion: nil)
-    }
     
 //    儲存DetailTableViewVC傳來的asset及ＤＢ物件
     var asset: PHAsset?
@@ -109,7 +76,7 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
 //    為了確認要使用update還是insert
     var updateFlag = false
 //    顯示第二張說明圖片的flag
-    var helpActFlag = false
+    var helpActFlag: Bool?
 //    儲存觸碰點
     var touchPoint = CGPoint.zero
 //    儲存view移動前的中心點
@@ -175,27 +142,41 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
         if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
             controller.modalPresentationStyle = .popover
             controller.popoverPresentationController?.delegate = self
-            controller.popoverPresentationController?.sourceView = buttonStack
-            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: buttonStack.frame.size)
-            let image = UIImage(named: NSLocalizedString("Edit1", comment: ""))
-            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
-            present(controller, animated: true, completion: {
-                self.helpActFlag = true
-            })
-        }
-    }
-    func helpAct2(){
-//        popover第二張說明圖
-        helpActFlag = false
-        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
-            controller.modalPresentationStyle = .popover
-            controller.popoverPresentationController?.delegate = self
-            controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
-            let image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
+            var image: UIImage?
+            switch helpActFlag {
+            case nil:
+                controller.popoverPresentationController?.sourceView = buttonStack
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: buttonStack.frame.size)
+                image = UIImage(named: NSLocalizedString("Edit1", comment: ""))
+                helpActFlag = true
+            case true:
+                controller.popoverPresentationController?.sourceView = imageView
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: imageView.contentClippingRect.size)
+                image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
+                helpActFlag = false
+            case false:
+                controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
+                image = UIImage(named: NSLocalizedString("Edit3", comment: ""))
+                helpActFlag = nil
+            default:
+                break
+            }
             controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
             present(controller, animated: true, completion: nil)
         }
     }
+//    func helpAct2(){
+////        popover第二張說明圖
+//        helpActFlag = false
+//        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
+//            controller.modalPresentationStyle = .popover
+//            controller.popoverPresentationController?.delegate = self
+//            controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
+//            let image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
+//            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
+//            present(controller, animated: true, completion: nil)
+//        }
+//    }
     @objc func saveText(){
         if textView.text == "" {
 //            若textView沒有內容則從ＤＢ刪除原有資料
@@ -292,21 +273,6 @@ class EditTextViewController: UIViewController, UITextFieldDelegate, UITextViewD
 //            view.center.y -= position.height
 //        }
 //    }
-    func textViewDidChangeSelection(_ textView: UITextView) {
-//        每次游標改變時都會呼叫此func
-//        找出游標所在位置
-        guard let select = textView.selectedTextRange else {return}
-        let tempPosition = textView.caretRect(for: select.end)
-//        找出游標在view上的座標
-        let position = textView.convert(tempPosition, to: view)
-        if position.minY - originalCenter.y + view.center.y <= 100 {
-//            若游標的位置高於navigationbar時將view往下調整
-            view.center.y += position.height
-        }else if position.maxY - originalCenter.y + view.center.y >= self.view.bounds.size.height - keyboardSize.height {
-//            若游標位置低於鍵盤時將view往上調整
-            view.center.y -= position.height
-        }
-    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        使用者進行觸碰時呼叫此func
@@ -367,17 +333,70 @@ extension EditTextViewController: UIPopoverPresentationControllerDelegate {
     }
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
 //        popover的View消失後執行此func(after iOS13
-        if helpActFlag {
+        if helpActFlag != nil {
 //            以flag確認是否顯示第二張說明
-            helpAct2()
+            helpAct()
         }
     }
     func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
 //        popover的View消失後執行此func(before iOS13
-        if helpActFlag {
+        if helpActFlag != nil {
 //            以flag確認是否顯示第二張說明
-            helpAct2()
+            helpAct()
         }
     }
 }
-
+extension EditTextViewController: ColorPickerDelegate {
+    func colorPicker(_ colorPicker: ColorPickerController, selectedColor: UIColor, usingControl: ColorControl) {
+        textView.textColor = selectedColor
+    }
+    func colorPicker(_ colorPicker: ColorPickerController, confirmedColor: UIColor, usingControl: ColorControl) {
+        dismiss(animated: true, completion: nil)
+    }
+}
+extension EditTextViewController: UITextViewDelegate{
+    func textViewDidChangeSelection(_ textView: UITextView) {
+//        每次游標改變時都會呼叫此func
+//        找出游標所在位置
+        guard let select = textView.selectedTextRange else {return}
+        let tempPosition = textView.caretRect(for: select.end)
+//        找出游標在view上的座標
+        let position = textView.convert(tempPosition, to: view)
+        if position.minY - originalCenter.y + view.center.y <= 100 {
+//            若游標的位置高於navigationbar時將view往下調整
+            view.center.y += position.height
+        }else if position.maxY - originalCenter.y + view.center.y >= self.view.bounds.size.height - keyboardSize.height {
+//            若游標位置低於鍵盤時將view往上調整
+            view.center.y -= position.height
+        }
+    }
+}
+extension EditTextViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+//        開始修改文字大小，UItextField的delegate會call這個func
+//        暫時關閉navigationbar上現有的所有功能
+        for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
+            navigationItem.rightBarButtonItems?[i].isEnabled = false
+        }
+        navigationItem.hidesBackButton = true
+//        加入修改完成按鈕
+        navigationItem.rightBarButtonItems?.append(textbar)
+        return true
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        結束修改文字大小，UItextField的delegate會call這個func
+//        結束編輯
+        textField.resignFirstResponder()
+//        檢查內容是否合理，然後修改文字大小，若不合理則將textField恢復成修改前狀態
+        guard let size = Double(textField.text!) else{
+            fontSize.text = textView.font?.pointSize.description
+            return true
+        }
+        if size > 0 {
+            textView.font = textView.font?.withSize(CGFloat(size))
+        }else{
+            fontSize.text = textView.font?.pointSize.description
+        }
+        return true
+    }
+}

@@ -22,6 +22,7 @@
 		547184DE23C1D3C200714916 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 547184DC23C1D3C200714916 /* LaunchScreen.storyboard */; };
 		547184E923C1D3C200714916 /* AlbumiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184E823C1D3C200714916 /* AlbumiTests.swift */; };
 		547184F823C1D61B00714916 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184F723C1D61B00714916 /* MainCollectionViewController.swift */; };
+		54783B0724ADBE89009C4992 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 54783B0924ADBE89009C4992 /* InfoPlist.strings */; };
 		54AA35C323F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */; };
 		54AA35C72403D3BA00B67593 /* ImageSimilarity.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */; };
 		54AA35CB2405430600B67593 /* SimilarImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54AA35CA2405430600B67593 /* SimilarImages.swift */; };
@@ -53,7 +54,7 @@
 		541CE6DA241B6B3D00601020 /* PictureRemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemark.swift; sourceTree = "<group>"; };
 		541CE6DC241B875700601020 /* PictureRemarkIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemarkIO.swift; sourceTree = "<group>"; };
 		545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextViewController.swift; sourceTree = "<group>"; };
-		547184CE23C1D3C200714916 /* Albumi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Albumi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		547184CE23C1D3C200714916 /* Photo Record.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Record.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		547184D323C1D3C200714916 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		547184D823C1D3C200714916 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		547184E823C1D3C200714916 /* AlbumiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumiTests.swift; sourceTree = "<group>"; };
 		547184EA23C1D3C200714916 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		547184F723C1D61B00714916 /* MainCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewController.swift; sourceTree = "<group>"; };
+		54783B0824ADBE89009C4992 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		54AA35C223F5615600B67593 /* IBPCollectionViewCompositionalLayoutInteroperability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IBPCollectionViewCompositionalLayoutInteroperability.swift; sourceTree = "<group>"; };
 		54AA35C62403D3BA00B67593 /* ImageSimilarity.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = ImageSimilarity.mlmodel; sourceTree = "<group>"; };
 		54AA35CA2405430600B67593 /* SimilarImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarImages.swift; sourceTree = "<group>"; };
@@ -114,7 +116,7 @@
 		547184CF23C1D3C200714916 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				547184CE23C1D3C200714916 /* Albumi.app */,
+				547184CE23C1D3C200714916 /* Photo Record.app */,
 				547184E423C1D3C200714916 /* AlbumiTests.xctest */,
 			);
 			name = Products;
@@ -133,6 +135,7 @@
 				547184DA23C1D3C200714916 /* Assets.xcassets */,
 				547184DF23C1D3C200714916 /* Info.plist */,
 				54D91C5C24A0822B00A7795E /* Localizable.strings */,
+				54783B0924ADBE89009C4992 /* InfoPlist.strings */,
 			);
 			path = Albumi;
 			sourceTree = "<group>";
@@ -228,7 +231,7 @@
 			);
 			name = Albumi;
 			productName = Albumi;
-			productReference = 547184CE23C1D3C200714916 /* Albumi.app */;
+			productReference = 547184CE23C1D3C200714916 /* Photo Record.app */;
 			productType = "com.apple.product-type.application";
 		};
 		547184E323C1D3C200714916 /* AlbumiTests */ = {
@@ -298,6 +301,7 @@
 				54D91C5A24A0822B00A7795E /* Localizable.strings in Resources */,
 				547184DB23C1D3C200714916 /* Assets.xcassets in Resources */,
 				547184D923C1D3C200714916 /* Main.storyboard in Resources */,
+				54783B0724ADBE89009C4992 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +454,14 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		54783B0924ADBE89009C4992 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				54783B0824ADBE89009C4992 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		54D91C5C24A0822B00A7795E /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -591,7 +603,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iknisy.Albumi;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Photo Record";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -611,7 +623,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iknisy.Albumi;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Photo Record";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

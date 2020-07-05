@@ -12,7 +12,7 @@ import IBPCollectionViewCompositionalLayout
 import NVActivityIndicatorView
 import GoogleMobileAds
 
-class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryChangeObserver, UIPopoverPresentationControllerDelegate {
+class MainCollectionViewController: UICollectionViewController{
 
     @IBOutlet weak var deletePhotoButton: UIButton!
     @IBAction func deletePhotoAction(){
@@ -149,7 +149,10 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
             controller.popoverPresentationController?.delegate = self
             controller.popoverPresentationController?.sourceView = deletePhotoButton
             controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
-            let image = UIImage(named: NSLocalizedString("Main", comment: ""))
+            var image = UIImage(named: NSLocalizedString("Main", comment: ""))
+            if navigationItem.rightBarButtonItems?.count == 2{
+                image = UIImage(named: NSLocalizedString("Main-filtered", comment: ""))
+            }
             controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
             present(controller, animated: true, completion: nil)
         }
@@ -166,6 +169,8 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
 //        default:
 //            break
 //        }
+//        若正在分析相似圖片則不作用
+        if nvActiveView.isAnimating {return}
 //        清除所有分析結果，畫面恢復為顯示photo library
         self.assetList.removeAll()
         self.assetThumbnail.removeAll()
@@ -255,18 +260,6 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         }
     }
     
-    func photoLibraryDidChange(_ changeInstance: PHChange) {
-//        偵測到設備內的圖片有增減以後會call這個func
-        if let change = changeInstance.changeDetails(for: assetFetchResult) {
-//            先將圖片增減改變儲存後待處理
-            changes.append(change)
-        }
-//        若是delete mode則直接處理圖片的增減
-        if deleteFlag {
-            assetChanged()
-        }
-    }
-    
     func assetChanged(){
 //        處理圖片的增減（動畫更新View
         guard changes.count > 0 else {return}
@@ -326,10 +319,6 @@ class MainCollectionViewController: UICollectionViewController, PHPhotoLibraryCh
         }
 //        動作完成，清除所有改變紀錄
         self.changes.removeAll()
-    }
-    
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .none
     }
     
     func checkAuthorization(){
@@ -549,7 +538,7 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
 //    }
     // Tells the delegate that the rewarded ad was dismissed.
     func rewardedAdDidDismiss(_ rewardedAd: GADRewardedAd) {
-//        廣告視窗關閉時呼叫次func
+//        廣告視窗關閉時呼叫此func
 //        重新再讀取新的廣告內容
       analyzingRewarded = createAndLoadRewardedAD()
     }
@@ -574,6 +563,24 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
         if rewardedAd.isReady {
 //            確認廣告已準備好才跳出廣告視窗
             rewardedAd.present(fromRootViewController: self, delegate: self)
+        }
+    }
+}
+extension MainCollectionViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+}
+extension MainCollectionViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+//        偵測到設備內的圖片有增減以後會call這個func
+        if let change = changeInstance.changeDetails(for: assetFetchResult) {
+//            先將圖片增減改變儲存後待處理
+            changes.append(change)
+        }
+//        若是delete mode則直接處理圖片的增減
+        if deleteFlag {
+            assetChanged()
         }
     }
 }

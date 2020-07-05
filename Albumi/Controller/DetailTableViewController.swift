@@ -144,6 +144,8 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
     var infoFlag = false
 //    以flag判斷是否需reload
     var reloadFlag = false
+//    顯示第二張說明圖片的flag
+    var helpActFlag = false
 //    宣告廣告橫幅
     lazy var adBannerView: GADBannerView = {
         let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
@@ -182,7 +184,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         navigationItem.rightBarButtonItem = helpButton
         
 //        設定GoogleMobileAds測試設備
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = (["a8ffedffeb5de5cf11194edd45471902429e1ecd", kGADSimulatorID] as! [String])
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = (["a8ffedffeb5de5cf11194edd45471902429e1ecd", "77326fb9e37ca20ddb6fd34175ee42416a7a1933"])
 //        向google請求廣告內容
         adBannerView.load(GADRequest())
     }
@@ -191,9 +193,18 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
             controller.modalPresentationStyle = .popover
             controller.popoverPresentationController?.delegate = self
-            controller.popoverPresentationController?.sourceView = editButton
-            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: editButton.frame.size)
-            let image = UIImage(named: NSLocalizedString("Detail", comment: ""))
+            var image: UIImage?
+            if helpActFlag {
+                controller.popoverPresentationController?.sourceView = imageView
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: imageView.contentClippingRect.size)
+                image = UIImage(named: NSLocalizedString("Detail2", comment: ""))
+                helpActFlag = false
+            }else{
+                controller.popoverPresentationController?.sourceView = editButton
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: editButton.frame.size)
+                image = UIImage(named: NSLocalizedString("Detail1", comment: ""))
+                helpActFlag = true
+            }
             controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
             present(controller, animated: true, completion: nil)
         }
@@ -412,6 +423,20 @@ extension DetailTableViewController: GADBannerViewDelegate {
 extension DetailTableViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
+    }
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+//        popover的View消失後執行此func(after iOS13
+        if helpActFlag {
+//            以flag確認是否顯示第二張說明
+            helpAct()
+        }
+    }
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+//        popover的View消失後執行此func(before iOS13
+        if helpActFlag {
+//            以flag確認是否顯示第二張說明
+            helpAct()
+        }
     }
 }
 

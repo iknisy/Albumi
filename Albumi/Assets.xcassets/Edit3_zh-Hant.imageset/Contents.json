@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Edit3_zh-Hant.png",
+      "filename" : "Edit2_zh-Hant.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -17,5 +17,8 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : true
   }
 }
