@@ -29,12 +29,6 @@ class MainCollectionViewController: UICollectionViewController{
                 controller.popoverPresentationController?.sourceView = deletePhotoButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
                 controller.labelString = "  " + NSLocalizedString("Normal Mode", comment: "")
-//                設定為可對應iOS13的DarkMode
-                if #available(iOS 13, *){
-                    controller.labelColor = UIColor.label
-                }else{
-                    controller.labelColor = UIColor.black
-                }
                 present(controller, animated: true, completion: nil)
             }
         }else{
@@ -67,14 +61,18 @@ class MainCollectionViewController: UICollectionViewController{
     }
 //    用來儲存所有圖片
     var assetList: [PHAsset] = []
+//    用來暫存相片數量變化前的數量
+    var assetListCount: Int?
 //    儲存圖片縮圖
-    var assetThumbnail:[UIImage] = []
+//    var assetThumbnail:[UIImage] = []
 //    儲存從設備fetch圖片的結果
     var assetFetchResult: PHFetchResult<PHAsset> = PHFetchResult.init()
 //    儲存設備上的圖片增減狀態
     var changes: [PHFetchResultChangeDetails<PHAsset>] = []
 //    delete mode的flag
     var deleteFlag = false
+//    確認filter作用中的flag
+    var filterFlag = false
 //    用來儲存指定要分析相似圖片的Asset
     var isAsset: PHAsset?
 //    設定預設的Layout
@@ -148,10 +146,14 @@ class MainCollectionViewController: UICollectionViewController{
             controller.modalPresentationStyle = .popover
             controller.popoverPresentationController?.delegate = self
             controller.popoverPresentationController?.sourceView = deletePhotoButton
-            controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: deletePhotoButton.frame.size)
-            var image = UIImage(named: NSLocalizedString("Main", comment: ""))
+            controller.popoverPresentationController?.sourceRect = deletePhotoButton.bounds
+            var image: UIImage?
             if navigationItem.rightBarButtonItems?.count == 2{
+//                有兩個button的說明圖
                 image = UIImage(named: NSLocalizedString("Main-filtered", comment: ""))
+            }else{
+//                只有一個button的說明圖
+                image = UIImage(named: NSLocalizedString("Main", comment: ""))
             }
             controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
             present(controller, animated: true, completion: nil)
@@ -173,8 +175,9 @@ class MainCollectionViewController: UICollectionViewController{
         if nvActiveView.isAnimating {return}
 //        清除所有分析結果，畫面恢復為顯示photo library
         self.assetList.removeAll()
-        self.assetThumbnail.removeAll()
+//        self.assetThumbnail.removeAll()
         self.isAsset = nil
+        self.filterFlag = false
         _ = navigationItem.rightBarButtonItems?.popLast()
         self.loadPhotos()
 //        self.collectionView.reloadData()
@@ -184,12 +187,14 @@ class MainCollectionViewController: UICollectionViewController{
         self.view.addSubview(nvActiveView)
         if let isAsset = isAsset {
 //            若有指定asset，並且asset庫沒有物件則進行相似圖片分析工作
+            changes.removeAll()
             if assetList.count != 0 {return}
 //            為了防止廣告播完又run這段code，所以在assetList加target圖片
             assetList.append(isAsset)
+            filterFlag = true
 //            reloadThumbnail()
 //            alert提示使用者看廣告
-            let noteAlertController = UIAlertController(title: NSLocalizedString("Please", comment: "Title"), message: NSLocalizedString("Watch Ad when analyzing.", comment: ""), preferredStyle: .alert)
+            let noteAlertController = UIAlertController(title: NSLocalizedString("NOTE", comment: "Title"), message: NSLocalizedString("Watch Ad when analyzing.", comment: ""), preferredStyle: .alert)
             let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default, handler: {_ in
                 self.analyzingSI(isAsset)
             })
@@ -206,10 +211,11 @@ class MainCollectionViewController: UICollectionViewController{
             for i in 0..<assetFetchResult.count {
                 assetList.append(assetFetchResult.object(at: i))
             }
-            reloadThumbnail()
+//            reloadThumbnail()
 //            停止動畫並移除
             self.nvActiveView.stopAnimating()
             self.nvActiveView.removeFromSuperview()
+            self.collectionView.reloadData()
         }
     }
     
@@ -224,7 +230,7 @@ class MainCollectionViewController: UICollectionViewController{
         let SI = SimilarImages()
         SI.findSimilarImages(asset: isAsset){assets in
             self.assetList = assets
-            self.reloadThumbnail()
+//            self.reloadThumbnail()
 //            向NotificationCenter回傳進度100％
             NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
 //            重讀畫面
@@ -269,6 +275,8 @@ class MainCollectionViewController: UICollectionViewController{
         var changed: IndexSet?
 //        是否需reload整個view的flag
         var reloadFlag = false
+//        暫存asset的數量供UIcollection增減更新動畫參考
+        assetListCount = self.assetList.count
 //        for迴圈處理每次改變
         for changes in self.changes {
 //            紀錄改變後的fetch結果
@@ -278,7 +286,7 @@ class MainCollectionViewController: UICollectionViewController{
             for i in 0..<self.assetFetchResult.count {
                 self.assetList.append(self.assetFetchResult.object(at: i))
             }
-            reloadThumbnail()
+//            reloadThumbnail()
 //            若增減的變動不大，會使用動畫更新view
             if changes.hasIncrementalChanges {
 //                分開儲存圖片增減改變的index
@@ -304,9 +312,13 @@ class MainCollectionViewController: UICollectionViewController{
                 self.collectionView.performBatchUpdates({
                     if let removed = removed, removed.count > 0 {
                         self.collectionView.deleteItems(at: removed.map({IndexPath(item: $0, section: 0)}) )
+//                        清除asset數量暫存
+                        self.assetListCount = nil
                     }
                     if let inserted = inserted, inserted.count > 0 {
                         self.collectionView.insertItems(at: inserted.map({IndexPath(item: $0, section: 0)}) )
+//                        清除asset數量暫存
+                        self.assetListCount = nil
                     }
                     if let changed = changed, changed.count > 0 {
                         self.collectionView.reloadItems(at: changed.map({IndexPath(item: $0, section: 0)}) )
@@ -327,10 +339,18 @@ class MainCollectionViewController: UICollectionViewController{
         switch status {
         case .authorized:
 //            已有權限，reload畫面
-            collectionView.reloadData()
+            loadPhotos()
+//            第一次執行時，popover訊息請使用者稍等
+            if let controller = storyboard?.instantiateViewController(withIdentifier: "PopoverViewController") as? PopoverViewController {
+                controller.modalPresentationStyle = .popover
+                controller.popoverPresentationController?.delegate = self
+                controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+                controller.labelString = "  " + NSLocalizedString("Please wait for initail when this App frist run", comment: "")
+                present(controller, animated: true, completion: nil)
+            }
         case .notDetermined:
 //            未設定權限，過10秒呼叫自己再次確認
-            checkAuthorization()
+//            checkAuthorization()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10, execute: {
                 self.checkAuthorization()
             })
@@ -341,8 +361,8 @@ class MainCollectionViewController: UICollectionViewController{
                 guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {return}
                 if UIApplication.shared.canOpenURL(settingsUrl) {
 //                    開啟設備Seetings並跳至此app的權限設定
-                    UIApplication.shared.open(settingsUrl, options: [:], completionHandler: {[weak self] _ in
-                        self?.checkAuthorization()
+                    UIApplication.shared.open(settingsUrl, options: [:], completionHandler: { _ in
+                        self.checkAuthorization()
                     })
                 }
             })
@@ -351,24 +371,25 @@ class MainCollectionViewController: UICollectionViewController{
         }
     }
     
-    func reloadThumbnail(_ index: Int = 0){
-//        重新讀取縮圖
-        if index == 0{
-//            index若為0則清除現有縮圖
-            assetThumbnail.removeAll()
-        }
-        let assetWork = AssetWorks()
-        assetWork.assetToUIImage(assetList[index], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){ image in
-            self.assetThumbnail.append(image)
-            if self.assetThumbnail.count == self.assetList.count {
-//                若assetList與assetThumbnail內容的數量相同代表已讀取完畢
-                self.collectionView.reloadData()
-            }else{
-//                未讀取完，下一個index
-                self.reloadThumbnail(index+1)
-            }
-        }
-    }
+//    func reloadThumbnail(_ index: Int = 0){
+////        重新讀取縮圖
+//        if index == 0{
+////            index若為0則清除現有縮圖
+//            assetThumbnail.removeAll()
+//        }
+//        if assetList.count <= 0 {return}
+//        let assetWork = AssetWorks()
+//        assetWork.assetToUIImage(assetList[index], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){ image in
+//            self.assetThumbnail.append(image)
+//            if self.assetThumbnail.count == self.assetList.count {
+////                若assetList與assetThumbnail內容的數量相同代表已讀取完畢
+//                self.collectionView.reloadData()
+//            }else{
+////                未讀取完，下一個index
+//                self.reloadThumbnail(index+1)
+//            }
+//        }
+//    }
 
     /*
     // MARK: - Navigation
@@ -390,9 +411,13 @@ class MainCollectionViewController: UICollectionViewController{
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // return the number of items
-        if assetList.count != assetThumbnail.count {
-//            若assetList與assetThumbnail內容的數量不同代表未讀取完
-            return 0
+//        if assetList.count != assetThumbnail.count {
+////            若assetList與assetThumbnail內容的數量不同代表未讀取完
+//            return 0
+//        }
+        if let count = assetListCount {
+//            供UIcollectionView增減動畫參考
+            return count
         }
         return assetList.count
     }
@@ -400,16 +425,14 @@ class MainCollectionViewController: UICollectionViewController{
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCollectionViewCell
         // Configure the cell
-        if assetThumbnail.count == assetList.count {
-            cell.gridImageView.image = assetThumbnail[indexPath.row]
+//        if assetThumbnail.count == assetList.count {
+//            cell.gridImageView.image = assetThumbnail[indexPath.row]
+//        }else{}
+//        從allAssets中讀取圖片，在cell裡顯示
+        let assetWork = AssetWorks()
+        assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
+            cell.gridImageView.image = image
         }
-//        else{
-////            從allAssets中讀取圖片，在cell裡顯示
-//            let assetWork = AssetWorks()
-//            assetWork.assetToUIImage(assetList[indexPath.row], targetSize: CGSize(width: 90, height: 90), contentMode: .aspectFit){image in
-//                cell.gridImageView.image = image
-//            }
-//        }
         return cell
     }
     
@@ -452,14 +475,21 @@ class MainCollectionViewController: UICollectionViewController{
             delActController.view.addSubview(imageView)
 //            使用者確認刪除圖片的動作
             let okAct = UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .destructive, handler: {_ in
-//                先從ＤＢ上刪除相關資料
-                _ = PictureRemarkIO.shared.deleteData(where: self.assetList[indexPath.row].localIdentifier)
+                let localID = self.assetList[indexPath.row].localIdentifier
 //                呼叫系統刪除圖片
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.deleteAssets(NSArray(object: self.assetList[indexPath.row]))
                 }, completionHandler: {(result, error) in
-                    if !result {
-                        print(error)
+                    if result {
+//                        從ＤＢ上刪除相關資料
+                        _ = PictureRemarkIO.shared.deleteData(where: localID)
+//                        filter作用時，在此處理畫面增減
+                        DispatchQueue.main.async{
+                            if self.filterFlag {
+                                self.assetList.remove(at: indexPath.row)
+                                self.collectionView.reloadData()
+                            }
+                        }
                     }
                 })
             })
@@ -574,6 +604,8 @@ extension MainCollectionViewController: UIPopoverPresentationControllerDelegate 
 extension MainCollectionViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
 //        偵測到設備內的圖片有增減以後會call這個func
+//        相簿filter作用時不做增減動畫
+        if filterFlag {return}
         if let change = changeInstance.changeDetails(for: assetFetchResult) {
 //            先將圖片增減改變儲存後待處理
             changes.append(change)
@@ -582,5 +614,12 @@ extension MainCollectionViewController: PHPhotoLibraryChangeObserver {
         if deleteFlag {
             assetChanged()
         }
+    }
+}
+
+extension UIAlertController {
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+//        此段是為了避免出現-[UIAlertController supportedInterfaceOrientations] was invoked recursively!
+        return .portrait
     }
 }

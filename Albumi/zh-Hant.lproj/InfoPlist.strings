@@ -9,3 +9,5 @@
 "CFBundleDisplayName" = "相輯式 — 相片輯錄式";
 
 "CFBundleName" = "相輯式";
+
+NSPhotoLibraryUsageDescription = "需允許相輯式擁有讀寫相簿的權限";

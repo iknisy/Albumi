@@ -144,17 +144,21 @@ class EditTextViewController: UIViewController{
             controller.popoverPresentationController?.delegate = self
             var image: UIImage?
             switch helpActFlag {
+//                以flag決定要顯示第幾張說明圖片
             case nil:
+//                第一張說明
                 controller.popoverPresentationController?.sourceView = buttonStack
-                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: buttonStack.frame.size)
+                controller.popoverPresentationController?.sourceRect = buttonStack.bounds
                 image = UIImage(named: NSLocalizedString("Edit1", comment: ""))
                 helpActFlag = true
             case true:
+//                第二張說明
                 controller.popoverPresentationController?.sourceView = imageView
-                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: imageView.contentClippingRect.size)
+                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: CGSize(width: imageView.bounds.size.width, height: imageView.bounds.midY))
                 image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
                 helpActFlag = false
             case false:
+//                第三張說明
                 controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
                 image = UIImage(named: NSLocalizedString("Edit3", comment: ""))
                 helpActFlag = nil
@@ -165,18 +169,6 @@ class EditTextViewController: UIViewController{
             present(controller, animated: true, completion: nil)
         }
     }
-//    func helpAct2(){
-////        popover第二張說明圖
-//        helpActFlag = false
-//        if let controller = storyboard?.instantiateViewController(withIdentifier: "PopImageViewController") as? PopImageViewController {
-//            controller.modalPresentationStyle = .popover
-//            controller.popoverPresentationController?.delegate = self
-//            controller.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
-//            let image = UIImage(named: NSLocalizedString("Edit2", comment: ""))
-//            controller.image = image?.resizeByWidth(UIScreen.main.bounds.width * 2/3)
-//            present(controller, animated: true, completion: nil)
-//        }
-//    }
     @objc func saveText(){
         if textView.text == "" {
 //            若textView沒有內容則從ＤＢ刪除原有資料

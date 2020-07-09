@@ -11,7 +11,7 @@
 
 "Delete Mode" = "刪除模式";
 
-"Please" = "跪求";
+"NOTE" = "通知";
 
 "Watch Ad when analyzing." = "分析期間請看廣告";
 
@@ -30,6 +30,8 @@
 "Do you want to delelte this Photo?\n\n\n\n\n\n\n\n\n\n" = "要刪除這張照片嗎？\n\n\n\n\n\n\n\n\n\n";
 
 "Cancel" = "取消";
+
+"Please wait for initail when this App frist run" = "App第一次執行需初始化，請稍等";
 
 "Main" = "Main_zh-Hant";
 

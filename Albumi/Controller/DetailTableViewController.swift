@@ -78,7 +78,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         let mainController = self.navigationController?.viewControllers[0] as? MainCollectionViewController
         mainController?.isAsset = assetList[assetIndex]
         mainController?.assetList.removeAll()
-        mainController?.assetThumbnail.removeAll()
+//        mainController?.assetThumbnail.removeAll()
         mainController?.collectionView.reloadData()
         self.navigationController?.popViewController(animated: true)
     }
@@ -126,7 +126,6 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
                 controller.popoverPresentationController?.sourceView = saveButton
                 controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: saveButton.frame.size)
                 controller.labelString = "  " + NSLocalizedString("Image saved", comment: "")
-                controller.labelColor = self.view.tintColor
                 present(controller, animated: true, completion: nil)
             }
         }
@@ -196,12 +195,12 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
             var image: UIImage?
             if helpActFlag {
                 controller.popoverPresentationController?.sourceView = imageView
-                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: imageView.contentClippingRect.size)
+                controller.popoverPresentationController?.sourceRect = imageView.bounds
                 image = UIImage(named: NSLocalizedString("Detail2", comment: ""))
                 helpActFlag = false
             }else{
                 controller.popoverPresentationController?.sourceView = editButton
-                controller.popoverPresentationController?.sourceRect = CGRect(origin: .zero, size: editButton.frame.size)
+                controller.popoverPresentationController?.sourceRect = editButton.bounds
                 image = UIImage(named: NSLocalizedString("Detail1", comment: ""))
                 helpActFlag = true
             }

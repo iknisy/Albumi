@@ -11,12 +11,12 @@
         <!--Popover View Controller-->
         <scene sceneID="vOu-w7-fbP">
             <objects>
-                <tableViewController storyboardIdentifier="PopoverViewController" id="zwc-OM-ciW" customClass="PopoverViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PopoverViewController" id="zwc-OM-ciW" customClass="PopoverViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="E1O-nJ-7HF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Mode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bu1-EN-ApY">
+                        <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Mode" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bu1-EN-ApY">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
@@ -39,7 +39,7 @@
         <!--Pop Image View Controller-->
         <scene sceneID="FKU-WD-Igx">
             <objects>
-                <viewController storyboardIdentifier="PopImageViewController" id="403-i6-wMm" customClass="PopImageViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PopImageViewController" id="403-i6-wMm" customClass="PopImageViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="4SA-gm-SRg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -66,7 +66,7 @@
         <!--Main Collection View Controller-->
         <scene sceneID="0Y2-3U-rmA">
             <objects>
-                <collectionViewController id="x4l-kL-xmW" customClass="MainCollectionViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController id="x4l-kL-xmW" customClass="MainCollectionViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="nUk-QM-jna">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -78,7 +78,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="100"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GridCell" id="So7-2x-NZn" customClass="GridCollectionViewCell" customModule="Albumi" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GridCell" id="So7-2x-NZn" customClass="GridCollectionViewCell" customModule="Photo_Record" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
@@ -131,7 +131,7 @@
         <!--Detail Table View Controller-->
         <scene sceneID="xya-Hj-qDn">
             <objects>
-                <tableViewController storyboardIdentifier="DetailTableViewController" id="Fd2-Mq-IFJ" customClass="DetailTableViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DetailTableViewController" id="Fd2-Mq-IFJ" customClass="DetailTableViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aim-1B-a5D">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -248,7 +248,7 @@
         <!--Edit Text View Controller-->
         <scene sceneID="s8Q-mh-bgd">
             <objects>
-                <viewController storyboardIdentifier="EditTextViewController" id="v7F-QP-2Lf" customClass="EditTextViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditTextViewController" id="v7F-QP-2Lf" customClass="EditTextViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7aD-Rm-T3x">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -348,7 +348,7 @@
         <!--Full Screen View Controller-->
         <scene sceneID="TVD-X1-cKV">
             <objects>
-                <viewController storyboardIdentifier="FullScreenViewController" id="w5P-pB-MKv" customClass="FullScreenViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenViewController" id="w5P-pB-MKv" customClass="FullScreenViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gM2-4h-tHO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -386,7 +386,7 @@
         <!--Main Navi View Controller-->
         <scene sceneID="7t9-lJ-oAe">
             <objects>
-                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" customClass="MainNaviViewController" customModule="Albumi" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="j67-iJ-eMj" customClass="MainNaviViewController" customModule="Photo_Record" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="alW-Ll-vz1">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>

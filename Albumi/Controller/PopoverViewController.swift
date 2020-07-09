@@ -13,7 +13,7 @@ class PopoverViewController: UITableViewController {
 
     @IBOutlet weak var label: UILabel!
     var labelString = ""
-    var labelColor = UIColor.white
+    var labelColor : UIColor?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,7 +24,14 @@ class PopoverViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
 //        設定popover訊息及顏色
         label.text = labelString
-        label.textColor = labelColor
+        if labelColor != nil {
+            label.textColor = labelColor
+        }else if #available(iOS 13, *){
+//            設定為可對應iOS13的DarkMode
+            label.textColor = UIColor.label
+        }else{
+            label.textColor = UIColor.black
+        }
 //        設定popover的大小
         self.preferredContentSize = CGSize(width: label.intrinsicContentSize.width + 7, height: label.intrinsicContentSize.height + 20)
     }
