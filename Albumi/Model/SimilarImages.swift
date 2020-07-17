@@ -152,7 +152,7 @@ class SimilarImages: NSObject {
             do{
                 try handler.perform([mlRequest])
             }catch{
-                print(error)
+//                print(error)
             }
         }
     }

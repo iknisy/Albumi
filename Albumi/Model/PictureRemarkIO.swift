@@ -49,16 +49,17 @@ class PictureRemarkIO: NSObject {
                     "\(sql_LocationY) float(24) not null)"
                     do{
                         try database.executeUpdate(createTableSQL, values: nil)
-                        print("Table Create at: \(filePath)")
+//                        print("Table Create at: \(filePath)")
                         created = true
                     }catch{
-                        print("Can not create the table.")
-                        print(error.localizedDescription)
+//                        print("Can not create the table.")
+//                        print(error.localizedDescription)
                     }
                     database.close()
-                }else{
-                    print("Can not open the database.")
                 }
+//                else{
+//                    print("Can not open the database.")
+//                }
             }
         }
         return created
@@ -75,7 +76,7 @@ class PictureRemarkIO: NSObject {
                 return true
             }
         }
-        print("Can not connect the database.")
+//        print("Can not connect the database.")
         return false
     }
     
@@ -87,8 +88,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(insertSQL, values: nil)
                 result = true
             }catch{
-                print("insertERROR")
-                print(error.localizedDescription)
+//                print("insertERROR")
+//                print(error.localizedDescription)
             }
             database.close()
         }
@@ -132,8 +133,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(updateSQL, values: nil)
                 result = true
             }catch{
-                print("updateERROR")
-                print(error.localizedDescription)
+//                print("updateERROR")
+//                print(error.localizedDescription)
             }
             database.close()
         }
@@ -155,8 +156,8 @@ class PictureRemarkIO: NSObject {
                     pictureRemarks.append(pictureRemark)
                 }
             }catch{
-                print("queryERROR")
-                print(error.localizedDescription)
+//                print("queryERROR")
+//                print(error.localizedDescription)
             }
             database.close()
         }
@@ -175,12 +176,13 @@ class PictureRemarkIO: NSObject {
                     size: Int(queryResult.int(forColumn: sql_Size)),
                     X: queryResult.double(forColumn: sql_LocationX),
                     Y: queryResult.double(forColumn: sql_LocationY))
-                }else{
-                    print(database.lastError())
                 }
+//                else{
+//                    print(database.lastError())
+//                }
             }catch{
-                print("queryERROR")
-                print(error.localizedDescription)
+//                print("queryERROR")
+//                print(error.localizedDescription)
             }
             database.close()
         }
@@ -194,8 +196,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(deleteSQL, values: nil)
                 result = true
             }catch{
-                print("deleteERROR")
-                print(error.localizedDescription)
+//                print("deleteERROR")
+//                print(error.localizedDescription)
             }
             database.close()
         }

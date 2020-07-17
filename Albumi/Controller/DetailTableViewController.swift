@@ -148,9 +148,9 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
 //    宣告廣告橫幅
     lazy var adBannerView: GADBannerView = {
         let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
-//        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
+        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
 //        以下官方提供的測試用ID
-        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+//        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         adBannerView.delegate = self
         adBannerView.rootViewController = self
         return adBannerView
@@ -183,7 +183,7 @@ class DetailTableViewController: UITableViewController, CAAnimationDelegate {
         navigationItem.rightBarButtonItem = helpButton
         
 //        設定GoogleMobileAds測試設備
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = (["a8ffedffeb5de5cf11194edd45471902429e1ecd", "77326fb9e37ca20ddb6fd34175ee42416a7a1933"])
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ([""])
 //        向google請求廣告內容
         adBannerView.load(GADRequest())
     }
@@ -414,8 +414,8 @@ extension DetailTableViewController: GADBannerViewDelegate {
     
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
 //        讀取廣告失敗時呼叫此func
-        print("Receive ads error:")
-        print(error)
+//        print("Receive ads error:")
+//        print(error)
     }
 }
 

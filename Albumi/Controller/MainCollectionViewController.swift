@@ -103,9 +103,9 @@ class MainCollectionViewController: UICollectionViewController{
 //    宣告廣告橫幅
     lazy var adBannerView: GADBannerView = {
         let adBannerView = GADBannerView(adSize: kGADAdSizeSmartBannerPortrait)
-//        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
+        adBannerView.adUnitID = "ca-app-pub-3920585268111253/9671922101"
 //        以下官方提供的測試用ID
-        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+//        adBannerView.adUnitID = "ca-app-pub-3940256099942544/2934735716"
         adBannerView.delegate = self
         adBannerView.rootViewController = self
         return adBannerView
@@ -133,7 +133,7 @@ class MainCollectionViewController: UICollectionViewController{
         navigationItem.rightBarButtonItem = helpButton
         
 //        設定GoogleMobileAds測試設備
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["a8ffedffeb5de5cf11194edd45471902429e1ecd", "77326fb9e37ca20ddb6fd34175ee42416a7a1933"]
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [""]
 //        向google請求廣告內容
         adBannerView.load(GADRequest())
         analyzingRewarded = createAndLoadRewardedAD()
@@ -547,8 +547,8 @@ extension MainCollectionViewController: GADBannerViewDelegate {
     
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
 //        讀取廣告失敗時呼叫此func
-        print("Receive ads error:")
-        print(error)
+//        print("Receive ads error:")
+//        print(error)
     }
 }
 extension MainCollectionViewController: GADRewardedAdDelegate {
@@ -556,7 +556,7 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
     // Tells the delegate that the user earned a reward.
     func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
 //        獲得獎勵時呼叫此func
-      print("Reward received with currency: \(reward.type), amount \(reward.amount).")
+//      print("Reward received with currency: \(reward.type), amount \(reward.amount).")
     }
 //    // Tells the delegate that the rewarded ad was presented.
 //    func rewardedAdDidPresent(_ rewardedAd: GADRewardedAd) {
@@ -575,18 +575,19 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
     
     func createAndLoadRewardedAD() -> GADRewardedAd{
 //        宣告一個新的廣告
-//        let adID = "ca-app-pub-3920585268111253/7334475320"
+        let adID = "ca-app-pub-3920585268111253/7334475320"
 //        以下為官方測試用ID
-        let adID = "ca-app-pub-3940256099942544/1712485313"
+//        let adID = "ca-app-pub-3940256099942544/1712485313"
         let rewardedAd = GADRewardedAd(adUnitID: adID)
 //        讀取廣告內容
-        rewardedAd.load(GADRequest(), completionHandler: {error in
-            if let error = error {
-                print("Loading fail: \(error)")
-            }else{
-                print("Loading Succeeded.")
-            }
-        })
+        rewardedAd.load(GADRequest(), completionHandler: nil)
+//            {error in
+//            if let error = error {
+//                print("Loading fail: \(error)")
+//            }else{
+//                print("Loading Succeeded.")
+//            }
+//        })
         return rewardedAd
     }
     func rewardedAdDisplay(_ rewardedAd: GADRewardedAd) {
