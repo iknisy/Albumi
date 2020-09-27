@@ -77,6 +77,8 @@ class EditTextViewController: UIViewController{
     var updateFlag = false
 //    顯示第二張說明圖片的flag
     var helpActFlag: Bool?
+//    暫存跳出app時的edit狀態
+    var editFlag: Bool?
 //    儲存觸碰點
     var touchPoint = CGPoint.zero
 //    儲存view移動前的中心點
@@ -220,7 +222,7 @@ class EditTextViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        註冊notification，以便在編輯文字時調整view
+//        註冊notification，以便在編輯文字跳出鍵盤時調整view
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
 //        NotificationCenter.default.addObserver(self, selector: #selector(textViewChanged), name: UITextView.textDidChangeNotification, object: nil)
@@ -265,6 +267,47 @@ class EditTextViewController: UIViewController{
 //            view.center.y -= position.height
 //        }
 //    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+//        註冊Notification，在app從背景恢復時回復編輯游標
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(checkEditState),
+                                               name: UIApplication.willResignActiveNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(restoreEditState),
+                                               name: UIApplication.didBecomeActiveNotification,
+                                               object: nil)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+//        移除Notification註冊
+        NotificationCenter.default.removeObserver(self)
+    }
+    @objc func checkEditState(){
+//        確認是否正在編輯文字，以flag暫存
+        if textView.isEditable {
+            editFlag = true
+        }
+        if fontSize.isEditing {
+            editFlag = false
+        }
+    }
+    @objc func restoreEditState(){
+//        確認flag以回復編輯狀態
+        guard let flag = editFlag else {return}
+        if flag {
+            textView.resignFirstResponder()
+            textView.becomeFirstResponder()
+            editFlag = nil
+        }else{
+            fontSize.resignFirstResponder()
+            fontSize.becomeFirstResponder()
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        使用者進行觸碰時呼叫此func
@@ -366,6 +409,11 @@ extension EditTextViewController: UITextViewDelegate{
 extension EditTextViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
 //        開始修改文字大小，UItextField的delegate會call這個func
+//        若有暫存editflag則跳過這個func
+        if editFlag == false {
+            editFlag = nil
+            return true
+        }
 //        暫時關閉navigationbar上現有的所有功能
         for i in 0..<(navigationItem.rightBarButtonItems?.count ?? 0) {
             navigationItem.rightBarButtonItems?[i].isEnabled = false

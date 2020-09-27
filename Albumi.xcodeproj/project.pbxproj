@@ -54,7 +54,7 @@
 		541CE6DA241B6B3D00601020 /* PictureRemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemark.swift; sourceTree = "<group>"; };
 		541CE6DC241B875700601020 /* PictureRemarkIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemarkIO.swift; sourceTree = "<group>"; };
 		545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextViewController.swift; sourceTree = "<group>"; };
-		547184CE23C1D3C200714916 /* Photo Record.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Record.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		547184CE23C1D3C200714916 /* Photo Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		547184D323C1D3C200714916 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		547184D823C1D3C200714916 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -116,7 +116,7 @@
 		547184CF23C1D3C200714916 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				547184CE23C1D3C200714916 /* Photo Record.app */,
+				547184CE23C1D3C200714916 /* Photo Records.app */,
 				547184E423C1D3C200714916 /* AlbumiTests.xctest */,
 			);
 			name = Products;
@@ -231,7 +231,7 @@
 			);
 			name = Albumi;
 			productName = Albumi;
-			productReference = 547184CE23C1D3C200714916 /* Photo Record.app */;
+			productReference = 547184CE23C1D3C200714916 /* Photo Records.app */;
 			productType = "com.apple.product-type.application";
 		};
 		547184E323C1D3C200714916 /* AlbumiTests */ = {
@@ -603,7 +603,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iknisyy.Albumi;
-				PRODUCT_NAME = "Photo Record";
+				PRODUCT_NAME = "Photo Records";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -623,7 +623,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.iknisyy.Albumi;
-				PRODUCT_NAME = "Photo Record";
+				PRODUCT_NAME = "Photo Records";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
