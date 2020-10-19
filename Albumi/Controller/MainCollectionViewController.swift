@@ -547,8 +547,8 @@ extension MainCollectionViewController: GADBannerViewDelegate {
     
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
 //        讀取廣告失敗時呼叫此func
-        print("Receive ads error:")
-        print(error)
+        dPrint("Receive ads error:")
+        dPrint(error)
     }
 }
 extension MainCollectionViewController: GADRewardedAdDelegate {
@@ -556,7 +556,7 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
     // Tells the delegate that the user earned a reward.
     func rewardedAd(_ rewardedAd: GADRewardedAd, userDidEarn reward: GADAdReward) {
 //        獲得獎勵時呼叫此func
-      print("Reward received with currency: \(reward.type), amount \(reward.amount).")
+      dPrint("Reward received with currency: \(reward.type), amount \(reward.amount).")
     }
 //    // Tells the delegate that the rewarded ad was presented.
 //    func rewardedAdDidPresent(_ rewardedAd: GADRewardedAd) {
@@ -582,9 +582,9 @@ extension MainCollectionViewController: GADRewardedAdDelegate {
 //        讀取廣告內容
         rewardedAd.load(GADRequest(), completionHandler: {error in
             if let error = error {
-                print("Loading fail: \(error)")
+                dPrint("Loading fail: \(error)")
             }else{
-                print("Loading Succeeded.")
+                dPrint("Loading Succeeded.")
             }
         })
         return rewardedAd

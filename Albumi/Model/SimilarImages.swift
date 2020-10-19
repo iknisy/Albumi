@@ -80,40 +80,6 @@ class SimilarImages: NSObject {
     }
     
     func requestSimilarImage(_ asset: PHAsset, index: Int? = nil, handler: @escaping ([Int], Int) -> Void){
-////        以下為直接使用Model的語法，測試時發現效能較差
-//        let model = ImageSimilarity()
-//        let assetWork = AssetWorks()
-//        assetWork.assetToUIImage(asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit){requestImage in
-////            將UIImage轉成CVPixelBuffer
-//            guard let image = self.pixelImage(requestImage) else{return}
-////            CVPixelBuffer轉成CoreMLModel所需的Input
-//            let modelInput = ImageSimilarityInput.init(image: image)
-////            Model分析的option
-//            let options = MLPredictionOptions.init()
-//            options.usesCPUOnly = true
-////            Model分析
-//            guard let predictionOutput = try? model.prediction(input: modelInput, options: options) else {return}
-////            將分析結果存放在Array
-//            let referenceImageNum = predictionOutput.distance.shape[0].intValue
-//            var distanceArray: [Double] = []
-//            for i in 0..<referenceImageNum {
-//                distanceArray.append(Double(truncating: predictionOutput.distance[i]))
-//            }
-////            以加權值遞減排序分析結果，取前20個
-//            let sorted = distanceArray.enumerated().sorted(by: {$0.element < $1.element})
-//            let knn = sorted[..<min(20, referenceImageNum)]
-//            var rank: [Int] = []
-//            for i in 0..<knn.count {
-//                rank.append(knn[i].offset)
-//            }
-////            回傳分析結果及index值
-//            if let index = index {
-//                handler(rank, index)
-//            }else{
-//                handler(rank, -1)
-//            }
-//        }
-        
 //        以下是使用Vision框架的語法
         guard let model = try? VNCoreMLModel(for: ImageSimilarity().model) else{
             fatalError("Can't load CoreML model")
@@ -152,11 +118,44 @@ class SimilarImages: NSObject {
             do{
                 try handler.perform([mlRequest])
             }catch{
-                print(error)
+                dPrint(error)
             }
         }
+        
+////        以下為直接使用Model的語法，測試時發現效能較差
+//        let model = ImageSimilarity()
+//        let assetWork = AssetWorks()
+//        assetWork.assetToUIImage(asset, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFit){requestImage in
+////            將UIImage轉成CVPixelBuffer
+//            guard let image = self.pixelImage(requestImage) else{return}
+////            CVPixelBuffer轉成CoreMLModel所需的Input
+//            let modelInput = ImageSimilarityInput.init(image: image)
+////            Model分析的option
+//            let options = MLPredictionOptions.init()
+//            options.usesCPUOnly = true
+////            Model分析
+//            guard let predictionOutput = try? model.prediction(input: modelInput, options: options) else {return}
+////            將分析結果存放在Array
+//            let referenceImageNum = predictionOutput.distance.shape[0].intValue
+//            var distanceArray: [Double] = []
+//            for i in 0..<referenceImageNum {
+//                distanceArray.append(Double(truncating: predictionOutput.distance[i]))
+//            }
+////            以加權值遞減排序分析結果，取前20個
+//            let sorted = distanceArray.enumerated().sorted(by: {$0.element < $1.element})
+//            let knn = sorted[..<min(20, referenceImageNum)]
+//            var rank: [Int] = []
+//            for i in 0..<knn.count {
+//                rank.append(knn[i].offset)
+//            }
+////            回傳分析結果及index值
+//            if let index = index {
+//                handler(rank, index)
+//            }else{
+//                handler(rank, -1)
+//            }
+//        }
     }
-    
 //    func pixelImage(_ image: UIImage) -> CVPixelBuffer? {
 ////        將UIImage轉為CVPixelBuffer
 //        UIGraphicsBeginImageContextWithOptions(CGSize(width: 224, height: 224), true, 2)

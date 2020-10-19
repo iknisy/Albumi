@@ -79,7 +79,7 @@ class AssetWorks {
             let geocoder = CLGeocoder()
             geocoder.reverseGeocodeLocation(location, preferredLocale: nil, completionHandler: {(placemarks, error) in
                 if let error = error {
-                    print(error)
+                    dPrint(error)
                 }
                 if let placemarks = placemarks {
                     let city = placemarks[0].locality ?? NSLocalizedString("Unknown City", comment: "")

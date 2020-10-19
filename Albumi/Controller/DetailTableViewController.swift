@@ -414,8 +414,8 @@ extension DetailTableViewController: GADBannerViewDelegate {
     
     func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
 //        讀取廣告失敗時呼叫此func
-        print("Receive ads error:")
-        print(error)
+        dPrint("Receive ads error:")
+        dPrint(error)
     }
 }
 

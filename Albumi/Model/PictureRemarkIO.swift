@@ -27,10 +27,10 @@ class PictureRemarkIO: NSObject {
         super.init()
         
         filePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/" + fileName
-//        print("filePath: \(filePath)")
+        dPrint("filePath: \(filePath)")
     }
     deinit {
-//        print("deinit \(self)")
+        dPrint("deinit \(self)")
     }
     
     func createTable() -> Bool{
@@ -49,15 +49,15 @@ class PictureRemarkIO: NSObject {
                     "\(sql_LocationY) float(24) not null)"
                     do{
                         try database.executeUpdate(createTableSQL, values: nil)
-                        print("Table Create at: \(filePath)")
+                        dPrint("Table Create at: \(filePath)")
                         created = true
                     }catch{
-                        print("Can not create the table.")
-                        print(error.localizedDescription)
+                        dPrint("Can not create the table.")
+                        dPrint(error.localizedDescription)
                     }
                     database.close()
                 }else{
-                    print("Can not open the database.")
+                    dPrint("Can not open the database.")
                 }
             }
         }
@@ -75,7 +75,7 @@ class PictureRemarkIO: NSObject {
                 return true
             }
         }
-        print("Can not connect the database.")
+        dPrint("Can not connect the database.")
         return false
     }
     
@@ -87,8 +87,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(insertSQL, values: nil)
                 result = true
             }catch{
-                print("insertERROR")
-                print(error.localizedDescription)
+                dPrint("insertERROR")
+                dPrint(error.localizedDescription)
             }
             database.close()
         }
@@ -132,8 +132,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(updateSQL, values: nil)
                 result = true
             }catch{
-                print("updateERROR")
-                print(error.localizedDescription)
+                dPrint("updateERROR")
+                dPrint(error.localizedDescription)
             }
             database.close()
         }
@@ -155,8 +155,8 @@ class PictureRemarkIO: NSObject {
                     pictureRemarks.append(pictureRemark)
                 }
             }catch{
-                print("queryERROR")
-                print(error.localizedDescription)
+                dPrint("queryERROR")
+                dPrint(error.localizedDescription)
             }
             database.close()
         }
@@ -176,11 +176,11 @@ class PictureRemarkIO: NSObject {
                     X: queryResult.double(forColumn: sql_LocationX),
                     Y: queryResult.double(forColumn: sql_LocationY))
                 }else{
-                    print(database.lastError())
+                    dPrint(database.lastError())
                 }
             }catch{
-                print("queryERROR")
-                print(error.localizedDescription)
+                dPrint("queryERROR")
+                dPrint(error.localizedDescription)
             }
             database.close()
         }
@@ -194,8 +194,8 @@ class PictureRemarkIO: NSObject {
                 try database.executeUpdate(deleteSQL, values: nil)
                 result = true
             }catch{
-                print("deleteERROR")
-                print(error.localizedDescription)
+                dPrint("deleteERROR")
+                dPrint(error.localizedDescription)
             }
             database.close()
         }
