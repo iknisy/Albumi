@@ -15,6 +15,7 @@
 		541C5985252C2CED0008F196 /* extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541C5984252C2CED0008F196 /* extention.swift */; };
 		541CE6DB241B6B3D00601020 /* PictureRemark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DA241B6B3D00601020 /* PictureRemark.swift */; };
 		541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 541CE6DC241B875700601020 /* PictureRemarkIO.swift */; };
+		5446972C257B8AE80002086F /* VisionWorks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5446972B257B8AE80002086F /* VisionWorks.swift */; };
 		545DC4FE24306BA3000DA5E7 /* EditTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */; };
 		547184D223C1D3C200714916 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D123C1D3C200714916 /* AppDelegate.swift */; };
 		547184D423C1D3C200714916 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 547184D323C1D3C200714916 /* SceneDelegate.swift */; };
@@ -56,6 +57,7 @@
 		541C59862539AC1A0008F196 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		541CE6DA241B6B3D00601020 /* PictureRemark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemark.swift; sourceTree = "<group>"; };
 		541CE6DC241B875700601020 /* PictureRemarkIO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureRemarkIO.swift; sourceTree = "<group>"; };
+		5446972B257B8AE80002086F /* VisionWorks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisionWorks.swift; sourceTree = "<group>"; };
 		545DC4FD24306BA3000DA5E7 /* EditTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextViewController.swift; sourceTree = "<group>"; };
 		547184CE23C1D3C200714916 /* Photo Records.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Photo Records.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		547184D123C1D3C200714916 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				541CE6DA241B6B3D00601020 /* PictureRemark.swift */,
 				541CE6DC241B875700601020 /* PictureRemarkIO.swift */,
 				541C5984252C2CED0008F196 /* extention.swift */,
+				5446972B257B8AE80002086F /* VisionWorks.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				541AC33E23EC2AF60087614E /* FullScreenViewController.swift in Sources */,
 				541CE6DD241B875700601020 /* PictureRemarkIO.swift in Sources */,
 				54AA35CD2407B5E500B67593 /* AssetWorks.swift in Sources */,
+				5446972C257B8AE80002086F /* VisionWorks.swift in Sources */,
 				545DC4FE24306BA3000DA5E7 /* EditTextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

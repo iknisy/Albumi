@@ -227,23 +227,45 @@ class MainCollectionViewController: UICollectionViewController{
 //        註冊Notification讓分析Model回傳進度
         NotificationCenter.default.addObserver(self, selector: #selector(getProcess(noti:)), name: Notification.Name(rawValue: "MLprocess"), object: nil)
 //        開始分析
-        let SI = SimilarImages()
-        SI.findSimilarImages(asset: isAsset){assets in
-            self.assetList = assets
-//            self.reloadThumbnail()
-//            向NotificationCenter回傳進度100％
-            NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
-//            重讀畫面
-            self.collectionView.reloadData()
-//            設定清除分析結果的Button
-            let clearButton = UIBarButtonItem(image: UIImage(named: "filterClear"), style: .plain, target: self, action: #selector(self.sequenceAct))
-            self.navigationItem.rightBarButtonItems?.append(clearButton)
-            
-//            停止動畫並移除
-            self.nvActiveView.stopAnimating()
-            self.nvActiveView.removeFromSuperview()
-//            移除Notification
-            NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
+        if #available(iOS 13, *) {
+            NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 0])
+            let VW = VisionWorks()
+            VW.findSimilarImages(asset: isAsset){ assets in
+                self.assetList = assets
+//                self.reloadThumbnail()
+//                向NotificationCenter回傳進度100％
+                NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
+//                重讀畫面
+                self.collectionView.reloadData()
+//                設定清除分析結果的Button
+                let clearButton = UIBarButtonItem(image: UIImage(named: "filterClear"), style: .plain, target: self, action: #selector(self.sequenceAct))
+                self.navigationItem.rightBarButtonItems?.append(clearButton)
+                
+//                停止動畫並移除
+                self.nvActiveView.stopAnimating()
+                self.nvActiveView.removeFromSuperview()
+//                移除Notification
+                NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
+            }
+        }else{
+            let SI = SimilarImages()
+            SI.findSimilarImages(asset: isAsset){assets in
+                self.assetList = assets
+//                self.reloadThumbnail()
+//                向NotificationCenter回傳進度100％
+                NotificationCenter.default.post(name: Notification.Name("MLprocess"), object: nil, userInfo: ["persent": 100])
+//                重讀畫面
+                self.collectionView.reloadData()
+//                設定清除分析結果的Button
+                let clearButton = UIBarButtonItem(image: UIImage(named: "filterClear"), style: .plain, target: self, action: #selector(self.sequenceAct))
+                self.navigationItem.rightBarButtonItems?.append(clearButton)
+                
+//                停止動畫並移除
+                self.nvActiveView.stopAnimating()
+                self.nvActiveView.removeFromSuperview()
+//                移除Notification
+                NotificationCenter.default.removeObserver(self, name: Notification.Name("MLprocess"), object: nil)
+            }
         }
     }
     @objc func getProcess(noti: Notification) {

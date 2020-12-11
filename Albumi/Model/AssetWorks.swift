@@ -19,6 +19,7 @@ class AssetWorks {
         option.isNetworkAccessAllowed = true
         option.resizeMode = .none
         option.deliveryMode = .highQualityFormat
+        option.isSynchronous = true
 //        option.progressHandler = {(process, error, isStop, info) in
 //            if error != nil {
 //                print(error.debugDescription)
